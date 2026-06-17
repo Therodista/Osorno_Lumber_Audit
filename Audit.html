@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Osorno Lumber — Machine Audit</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;background:#F5F4F0;color:#1A1A18;min-height:100vh;}
+
+/* ── Setup screen ── */
+#setupScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:2rem;}
+.setup-card{background:#fff;border:0.5px solid #D4D2CB;border-radius:12px;padding:2rem 2.5rem;max-width:480px;width:100%;}
+.setup-card h1{font-size:18px;font-weight:500;margin-bottom:6px;}
+.setup-card p{font-size:13px;color:#5C5C58;line-height:1.6;margin-bottom:1.5rem;}
+.setup-card label{display:block;font-size:11px;font-weight:500;color:#5C5C58;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.04em;}
+.setup-card input{width:100%;border:0.5px solid #C8C6BE;border-radius:6px;padding:8px 10px;font-size:13px;outline:none;margin-bottom:12px;}
+.setup-card input:focus{border-color:#BA7517;}
+.setup-card .hint{font-size:11px;color:#8C8C88;margin-bottom:1.5rem;line-height:1.5;}
+.btn-primary{background:#1A1A18;color:#fff;border:none;border-radius:6px;padding:9px 18px;font-size:13px;cursor:pointer;width:100%;}
+.btn-primary:hover{background:#2D2D2A;}
+.err{font-size:11px;color:#A32D2D;margin-top:6px;display:none;}
+
+/* ── App shell ── */
+#app{display:none;}
+.app-header{background:#1A1A18;color:#F5F4F0;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:48px;position:sticky;top:0;z-index:100;}
+.app-header h1{font-size:14px;font-weight:500;letter-spacing:0.02em;}
+.header-right{display:flex;align-items:center;gap:8px;}
+.hbtn{background:transparent;border:0.5px solid rgba(255,255,255,0.2);border-radius:5px;padding:4px 10px;font-size:11px;cursor:pointer;color:#F5F4F0;display:inline-flex;align-items:center;gap:4px;}
+.hbtn:hover{background:rgba(255,255,255,0.08);}
+.hbtn.accent{border-color:#EF9F27;color:#EF9F27;}
+.hbtn.accent:hover{background:rgba(239,159,39,0.1);}
+
+/* ── Nav tabs ── */
+.nav-bar{background:#fff;border-bottom:0.5px solid #D4D2CB;padding:0 1.5rem;display:flex;gap:0;}
+.nav-tab{padding:10px 16px;font-size:12px;cursor:pointer;color:#5C5C58;border-bottom:2px solid transparent;white-space:nowrap;}
+.nav-tab.active{color:#1A1A18;border-bottom-color:#1A1A18;font-weight:500;}
+.nav-tab:hover{color:#1A1A18;}
+
+/* ── Content area ── */
+.content{padding:1.25rem 1.5rem;max-width:100%;overflow-x:auto;}
+
+/* ── Audit view ── */
+.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px;}
+.btn{background:transparent;border:0.5px solid #C8C6BE;border-radius:5px;padding:4px 10px;font-size:11px;cursor:pointer;color:#1A1A18;display:inline-flex;align-items:center;gap:4px;}
+.btn:hover{background:#F0EFE9;}
+.btn.accent{border-color:#BA7517;color:#BA7517;}
+.btn.accent:hover{background:#FDF3E3;}
+.btn.green{border-color:#3B6D11;color:#3B6D11;}
+.btn.green:hover{background:#EAF3DE;}
+.species-bar{display:flex;align-items:center;gap:0;margin-bottom:8px;flex-wrap:wrap;}
+.sp-tabs{display:flex;border:0.5px solid #C8C6BE;border-radius:6px;overflow:hidden;}
+.sp-tab{padding:5px 12px;font-size:12px;cursor:pointer;color:#5C5C58;background:#F5F4F0;border-right:0.5px solid #D4D2CB;display:flex;align-items:center;gap:5px;white-space:nowrap;}
+.sp-tab:last-child{border-right:none;}
+.sp-tab.active{background:#fff;color:#1A1A18;font-weight:500;}
+.pct-pill{font-size:10px;padding:1px 5px;border-radius:3px;font-weight:500;}
+.pct-pill.g{background:#EAF3DE;color:#27500A;}
+.pct-pill.a{background:#FAEEDA;color:#633806;}
+.pct-pill.r{background:#FCEBEB;color:#791F1F;}
+.sp-del{background:none;border:none;cursor:pointer;color:#8C8C88;font-size:12px;padding:0;margin-left:2px;}
+.sp-del:hover{color:#E24B4A;}
+.add-sp{padding:5px 10px;font-size:12px;cursor:pointer;color:#BA7517;background:transparent;border:none;display:flex;align-items:center;gap:3px;}
+.sp-info{display:flex;align-items:center;gap:8px;padding:6px 10px;background:#F5F4F0;border-radius:6px;margin-bottom:8px;}
+.sp-name{font-size:13px;font-weight:500;color:#1A1A18;background:transparent;border:none;outline:none;min-width:120px;}
+.sp-name:focus{border-bottom:1px solid #BA7517;}
+.sp-note{font-size:11px;color:#5C5C58;background:transparent;border:none;outline:none;flex:1;min-width:160px;}
+.tscroll{overflow-x:auto;border:0.5px solid #D4D2CB;border-radius:8px;}
+table{border-collapse:collapse;font-size:11px;min-width:100%;}
+th,td{border:0.5px solid #D4D2CB;padding:3px 5px;text-align:center;white-space:nowrap;}
+th{font-weight:500;font-size:10px;color:#5C5C58;background:#F5F4F0;}
+.th-machine{font-size:11px;color:#1A1A18;font-weight:500;}
+.th-primary{background:#FDF3E3;color:#633806;}
+.th-section-thickness{background:#0C447C;color:#E6F1FB;font-size:11px;font-weight:500;text-align:left;padding-left:8px;}
+.th-section-width{background:#27500A;color:#EAF3DE;font-size:11px;font-weight:500;text-align:left;padding-left:8px;}
+.th-section-length{background:#3C3489;color:#EEEDFE;font-size:11px;font-weight:500;text-align:left;padding-left:8px;}
+.th-section-wane1{background:#633806;color:#FAEEDA;font-size:11px;font-weight:500;text-align:left;padding-left:8px;}
+.th-section-wane2{background:#854F0B;color:#FAEEDA;font-size:11px;font-weight:500;text-align:left;padding-left:8px;}
+.th-section-pricing{background:#0F6E56;color:#E1F5EE;font-size:11px;font-weight:500;text-align:left;padding-left:8px;}
+.th-section-kerf{background:#444441;color:#F1EFE8;font-size:11px;font-weight:500;text-align:left;padding-left:8px;}
+td.row-label{text-align:left;padding-left:8px;font-size:11px;color:#1A1A18;background:#fff;min-width:150px;max-width:200px;}
+td.row-label.sb-row{color:#5C5C58;font-style:italic;}
+td.row-label.cb-row{color:#185FA5;}
+.label-inp{border:none;background:transparent;font-size:11px;color:inherit;outline:none;width:100%;min-width:80px;max-width:160px;}
+.label-inp:focus{outline:1px solid #C8C6BE;border-radius:2px;background:#F5F4F0;}
+.prim-cell{background:#FDF3E3;}
+.prim-cell input{background:transparent;border:none;width:52px;font-size:11px;text-align:center;color:#633806;font-weight:500;outline:none;}
+.prim-cell input:focus{outline:1px solid #BA7517;border-radius:2px;}
+.ok-cell input{background:transparent;border:none;width:52px;font-size:11px;text-align:center;color:#1A1A18;outline:none;}
+.ok-cell input:focus{outline:1px solid #C8C6BE;border-radius:2px;}
+.diff-cell{background:#FCEBEB;}
+.diff-cell input{background:transparent;border:none;width:52px;font-size:11px;text-align:center;color:#791F1F;font-weight:500;outline:none;}
+.diff-cell input:focus{outline:1px solid #E24B4A;border-radius:2px;}
+.name-inp{border:none;background:transparent;font-size:11px;font-weight:500;color:#1A1A18;text-align:center;outline:none;max-width:90px;width:90px;}
+.name-inp:focus{outline:1px solid #C8C6BE;border-radius:2px;background:#F5F4F0;}
+.machine-align{display:block;font-size:9px;margin-top:1px;}
+.machine-align.g{color:#27500A;}
+.machine-align.a{color:#BA7517;}
+.machine-align.r{color:#A32D2D;}
+.row-type-toggle{font-size:9px;padding:1px 5px;border-radius:3px;cursor:pointer;border:0.5px solid #C8C6BE;background:#F5F4F0;color:#5C5C58;margin-left:3px;flex-shrink:0;}
+.add-row-btn{font-size:10px;padding:2px 7px;cursor:pointer;border:0.5px dashed #C8C6BE;background:transparent;color:#8C8C88;border-radius:3px;}
+.add-row-btn:hover{color:#BA7517;border-color:#BA7517;}
+.del-btn{background:none;border:none;cursor:pointer;color:#8C8C88;font-size:11px;padding:0;line-height:1;}
+.del-btn:hover{color:#E24B4A;}
+.sect-badge{display:inline-block;padding:1px 5px;border-radius:3px;font-size:9px;font-weight:500;margin-left:6px;opacity:0.8;}
+.row-label-wrap{display:flex;align-items:center;gap:3px;width:100%;}
+.summary{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center;}
+.sc{background:#fff;border:0.5px solid #D4D2CB;border-radius:6px;padding:6px 12px;}
+.sc .v{font-size:16px;font-weight:500;color:#1A1A18;}
+.sc .l{font-size:10px;color:#5C5C58;}
+.sc.r .v{color:#A32D2D;}
+.sc.g .v{color:#27500A;}
+.align-bar-wrap{background:#fff;border:0.5px solid #D4D2CB;border-radius:6px;padding:6px 14px;display:flex;align-items:center;gap:10px;margin-left:auto;}
+.abar{width:100px;height:5px;background:#D4D2CB;border-radius:3px;overflow:hidden;}
+.abar-fill{height:100%;border-radius:3px;}
+.cross-table{border:0.5px solid #D4D2CB;border-radius:8px;margin-top:10px;overflow:hidden;}
+.cross-header{background:#F5F4F0;padding:6px 12px;font-size:11px;font-weight:500;color:#5C5C58;display:flex;justify-content:space-between;}
+.ct{width:100%;border-collapse:collapse;font-size:11px;}
+.ct th,.ct td{border:0.5px solid #D4D2CB;padding:4px 8px;text-align:center;}
+.ct th{background:#F5F4F0;font-size:10px;font-weight:500;color:#5C5C58;}
+.ct td.mname{text-align:left;font-weight:500;color:#1A1A18;}
+.pill{display:inline-block;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:500;}
+.pill.g{background:#EAF3DE;color:#27500A;}
+.pill.a{background:#FAEEDA;color:#633806;}
+.pill.r{background:#FCEBEB;color:#791F1F;}
+
+/* ── History view ── */
+.history-empty{padding:3rem;text-align:center;color:#8C8C88;font-size:13px;}
+.audit-card{background:#fff;border:0.5px solid #D4D2CB;border-radius:8px;padding:1rem 1.25rem;margin-bottom:10px;cursor:pointer;transition:border-color 0.15s;}
+.audit-card:hover{border-color:#BA7517;}
+.audit-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.audit-card-title{font-size:13px;font-weight:500;color:#1A1A18;}
+.audit-card-date{font-size:11px;color:#8C8C88;}
+.audit-card-meta{display:flex;gap:8px;flex-wrap:wrap;}
+.audit-meta-chip{font-size:10px;padding:2px 7px;border-radius:3px;background:#F5F4F0;color:#5C5C58;border:0.5px solid #D4D2CB;}
+.audit-card-actions{display:flex;gap:6px;margin-top:10px;}
+
+/* ── Trend view ── */
+.trend-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:10px;}
+.trend-card{background:#fff;border:0.5px solid #D4D2CB;border-radius:8px;padding:1rem;}
+.trend-card h3{font-size:12px;font-weight:500;color:#5C5C58;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.04em;}
+.trend-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.trend-label{font-size:11px;color:#1A1A18;flex:1;min-width:80px;}
+.trend-bar-wrap{flex:2;height:6px;background:#F0EFE9;border-radius:3px;overflow:hidden;}
+.trend-bar{height:100%;border-radius:3px;transition:width 0.3s;}
+.trend-pct{font-size:11px;font-weight:500;min-width:36px;text-align:right;}
+.trend-arrow{font-size:12px;}
+.trend-arrow.up{color:#27500A;}
+.trend-arrow.down{color:#A32D2D;}
+.trend-arrow.same{color:#8C8C88;}
+
+/* ── Toast ── */
+#toast{position:fixed;bottom:1.5rem;right:1.5rem;background:#1A1A18;color:#F5F4F0;padding:8px 14px;border-radius:6px;font-size:12px;opacity:0;transition:opacity 0.2s;pointer-events:none;z-index:999;}
+#toast.show{opacity:1;}
+
+/* ── Status bar ── */
+.status-bar{background:#F5F4F0;border-top:0.5px solid #D4D2CB;padding:4px 1.5rem;font-size:10px;color:#8C8C88;display:flex;justify-content:space-between;align-items:center;position:sticky;bottom:0;}
+
+/* ── Loading ── */
+.loading{display:flex;align-items:center;justify-content:center;padding:3rem;color:#8C8C88;font-size:13px;gap:8px;}
+.spinner{width:16px;height:16px;border:2px solid #D4D2CB;border-top-color:#1A1A18;border-radius:50%;animation:spin 0.7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ── Modal ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;display:flex;align-items:center;justify-content:center;padding:1rem;}
+.modal{background:#fff;border-radius:10px;padding:1.5rem;max-width:440px;width:100%;border:0.5px solid #D4D2CB;}
+.modal h2{font-size:15px;font-weight:500;margin-bottom:8px;}
+.modal p{font-size:13px;color:#5C5C58;margin-bottom:1rem;line-height:1.6;}
+.modal input,.modal textarea{width:100%;border:0.5px solid #C8C6BE;border-radius:6px;padding:8px 10px;font-size:13px;outline:none;margin-bottom:10px;font-family:inherit;}
+.modal input:focus,.modal textarea:focus{border-color:#BA7517;}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;}
+.modal-actions .btn-primary{width:auto;padding:7px 16px;}
+.modal-actions .btn-cancel{background:transparent;border:0.5px solid #C8C6BE;border-radius:6px;padding:7px 16px;font-size:13px;cursor:pointer;color:#5C5C58;}
+.modal-actions .btn-cancel:hover{background:#F5F4F0;}
+</style>
+</head>
+<body>
+
+<!-- Setup Screen -->
+<div id="setupScreen">
+  <div class="setup-card">
+    <h1>Osorno Lumber — Machine Audit</h1>
+    <p>This tool saves audit results to a shared GitHub repository so your whole team can access history and track alignment over time. You only need to set this up once on each device.</p>
+    <label>GitHub Personal Access Token</label>
+    <input type="password" id="tokenInput" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"/>
+    <div class="hint">
+      Generate a token at GitHub → Settings → Developer settings → Personal access tokens (classic). Select the <strong>repo</strong> scope. The token is stored only on this device and never sent anywhere except GitHub.
+    </div>
+    <label>GitHub Username</label>
+    <input type="text" id="ownerInput" placeholder="Therodista" value="Therodista"/>
+    <label>Repository Name</label>
+    <input type="text" id="repoInput" placeholder="Osorno_Lumber_Audit" value="Osorno_Lumber_Audit"/>
+    <button class="btn-primary" onclick="saveSetup()">Connect to GitHub</button>
+    <div class="err" id="setupErr">Could not connect — check your token and repo name.</div>
+  </div>
+</div>
+
+<!-- Main App -->
+<div id="app">
+  <div class="app-header">
+    <h1>Osorno Lumber — Machine Audit</h1>
+    <div class="header-right">
+      <span id="syncStatus" style="font-size:10px;color:rgba(255,255,255,0.45);"></span>
+      <button class="hbtn" onclick="showTab('history')">Audit history</button>
+      <button class="hbtn" onclick="showTab('trends')">Trends</button>
+      <button class="hbtn accent" onclick="openSaveModal()">Save audit snapshot</button>
+    </div>
+  </div>
+  <div class="nav-bar">
+    <div class="nav-tab active" id="tab-audit" onclick="showTab('audit')">Current audit</div>
+    <div class="nav-tab" id="tab-history" onclick="showTab('history')">History</div>
+    <div class="nav-tab" id="tab-trends" onclick="showTab('trends')">Trends</div>
+  </div>
+
+  <div class="content" id="view-audit">
+    <div class="top-bar">
+      <div style="display:flex;align-items:center;gap:6px;">
+        <span style="font-size:12px;font-weight:500;color:#1A1A18;">Machine settings</span>
+      </div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;">
+        <button class="btn accent" onclick="addMachine()">+ Machine</button>
+        <button class="btn accent" onclick="addProductRow()">+ Product row</button>
+        <button class="btn" onclick="exportCSV()">Export CSV</button>
+      </div>
+    </div>
+    <div class="species-bar">
+      <div class="sp-tabs" id="spTabs"></div>
+      <button class="add-sp" onclick="addSpecies()">+ Species</button>
+    </div>
+    <div id="spInfo"></div>
+    <div class="tscroll"><table id="mainTable"></table></div>
+    <div class="summary" id="summary"></div>
+    <div class="cross-table" id="crossTable"></div>
+  </div>
+
+  <div class="content" id="view-history" style="display:none;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:13px;font-weight:500;">Saved audits</span>
+      <button class="btn" onclick="loadHistory()">↻ Refresh</button>
+    </div>
+    <div id="historyList"><div class="loading"><div class="spinner"></div>Loading history…</div></div>
+  </div>
+
+  <div class="content" id="view-trends" style="display:none;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:13px;font-weight:500;">Alignment trends over time</span>
+      <span style="font-size:11px;color:#8C8C88;" id="trendSubtitle"></span>
+    </div>
+    <div id="trendContent"><div class="loading"><div class="spinner"></div>Loading trends…</div></div>
+  </div>
+
+  <div class="status-bar">
+    <span id="statusLeft">Ready</span>
+    <span id="statusRight"></span>
+  </div>
+</div>
+
+<!-- Save Modal -->
+<div id="saveModal" class="modal-overlay" style="display:none;">
+  <div class="modal">
+    <h2>Save audit snapshot</h2>
+    <p>This saves the current machine settings and alignment scores to your shared audit history on GitHub.</p>
+    <label style="font-size:11px;font-weight:500;color:#5C5C58;display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.04em;">Audit label</label>
+    <input type="text" id="auditLabel" placeholder="e.g. Q2 2026 — post-maintenance check"/>
+    <label style="font-size:11px;font-weight:500;color:#5C5C58;display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.04em;">Notes (optional)</label>
+    <textarea id="auditNotes" rows="3" placeholder="Any observations, context, or follow-up items…" style="resize:vertical;"></textarea>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeSaveModal()">Cancel</button>
+      <button class="btn-primary" onclick="saveSnapshot()" style="width:auto;">Save to GitHub</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* ════════════════════════════════════════
+   CONFIG & STATE
+════════════════════════════════════════ */
+let GH_TOKEN='', GH_OWNER='', GH_REPO='';
+const DATA_FILE='audit-data.json';
+
+const SETTING_GROUPS=[
+  {key:'thickness',label:'Thickness',unit:'in'},
+  {key:'width',label:'Width',unit:'in'},
+  {key:'length',label:'Length',unit:'ft'},
+  {key:'wane1',label:'Primary wane',unit:'%'},
+  {key:'wane2',label:'Secondary wane',unit:'%'},
+  {key:'pricing',label:'Pricing',unit:'$/MBF'},
+  {key:'kerf',label:'Kerf',unit:'in'},
+];
+const SUBFIELDS=['target','min','max'];
+
+let rowId=100, machineId=10, spId=10;
+let species=[], activeSp=null;
+let auditHistory=[], historyFileSha='';
+
+/* ════════════════════════════════════════
+   SETUP
+════════════════════════════════════════ */
+function saveSetup(){
+  const token=document.getElementById('tokenInput').value.trim();
+  const owner=document.getElementById('ownerInput').value.trim();
+  const repo=document.getElementById('repoInput').value.trim();
+  if(!token||!owner||!repo)return;
+  GH_TOKEN=token; GH_OWNER=owner; GH_REPO=repo;
+  localStorage.setItem('gh_token',token);
+  localStorage.setItem('gh_owner',owner);
+  localStorage.setItem('gh_repo',repo);
+  document.getElementById('setupErr').style.display='none';
+  document.querySelector('.btn-primary').textContent='Connecting…';
+  initApp();
+}
+
+function checkStoredSetup(){
+  const token=localStorage.getItem('gh_token');
+  const owner=localStorage.getItem('gh_owner');
+  const repo=localStorage.getItem('gh_repo');
+  if(token&&owner&&repo){
+    GH_TOKEN=token; GH_OWNER=owner; GH_REPO=repo;
+    initApp();
+  }
+}
+
+async function initApp(){
+  document.getElementById('setupScreen').style.display='none';
+  document.getElementById('app').style.display='block';
+  initSpecies();
+  render();
+  await loadHistory();
+  setStatus('Connected to '+GH_OWNER+'/'+GH_REPO,'');
+}
+
+/* ════════════════════════════════════════
+   GITHUB API
+════════════════════════════════════════ */
+async function ghGet(path){
+  const r=await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${path}`,{
+    headers:{Authorization:`token ${GH_TOKEN}`,'Accept':'application/vnd.github.v3+json'}
+  });
+  return r;
+}
+
+async function ghPut(path,content,sha,message){
+  const body={message,content:btoa(unescape(encodeURIComponent(content)))};
+  if(sha)body.sha=sha;
+  const r=await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${path}`,{
+    method:'PUT',
+    headers:{Authorization:`token ${GH_TOKEN}`,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},
+    body:JSON.stringify(body)
+  });
+  return r;
+}
+
+async function loadHistory(){
+  setStatus('Loading history…','');
+  try{
+    const r=await ghGet(DATA_FILE);
+    if(r.status===404){
+      auditHistory=[];
+      historyFileSha='';
+      renderHistory();
+      renderTrends();
+      setStatus('No audit history yet — save your first snapshot','');
+      return;
+    }
+    const data=await r.json();
+    historyFileSha=data.sha;
+    const decoded=decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
+    auditHistory=JSON.parse(decoded);
+    renderHistory();
+    renderTrends();
+    setStatus('History loaded — '+auditHistory.length+' audit'+(auditHistory.length!==1?'s':''),'');
+  }catch(e){
+    setStatus('Error loading history','');
+    console.error(e);
+  }
+}
+
+async function saveSnapshot(){
+  const label=document.getElementById('auditLabel').value.trim();
+  if(!label){document.getElementById('auditLabel').focus();return;}
+  const notes=document.getElementById('auditNotes').value.trim();
+  closeSaveModal();
+  setStatus('Saving to GitHub…','');
+  setSyncStatus('Saving…');
+
+  const snapshot={
+    id:Date.now(),
+    label,
+    notes,
+    date:new Date().toISOString(),
+    species:species.map(sp=>({
+      name:sp.name,
+      alignment:calcAlign(sp),
+      machineAlignments:sp.machines.map(m=>({name:m.name,alignment:calcMachineAlign(m,sp)})),
+      sectionAlignments:SETTING_GROUPS.map(g=>({key:g.key,label:g.label,alignment:calcSectionAlign(sp,g.key)})),
+    }))
+  };
+
+  auditHistory.push(snapshot);
+  const content=JSON.stringify(auditHistory,null,2);
+
+  try{
+    const r=await ghPut(DATA_FILE,content,historyFileSha,`Audit: ${label}`);
+    if(r.ok){
+      const rd=await r.json();
+      historyFileSha=rd.content.sha;
+      toast('Audit saved ✓');
+      renderHistory();
+      renderTrends();
+      setStatus('Saved — '+auditHistory.length+' audit'+(auditHistory.length!==1?'s':''),'');
+      setSyncStatus('');
+    }else{
+      auditHistory.pop();
+      toast('Save failed — check your token');
+      setSyncStatus('Save failed');
+      setStatus('Save failed','');
+    }
+  }catch(e){
+    auditHistory.pop();
+    toast('Save failed — check connection');
+    setSyncStatus('');
+    console.error(e);
+  }
+}
+
+async function deleteSnapshot(id){
+  if(!confirm('Delete this audit snapshot? This cannot be undone.'))return;
+  auditHistory=auditHistory.filter(a=>a.id!==id);
+  const content=JSON.stringify(auditHistory,null,2);
+  setStatus('Deleting…','');
+  const r=await ghPut(DATA_FILE,content,historyFileSha,`Delete audit ${id}`);
+  if(r.ok){
+    const rd=await r.json();
+    historyFileSha=rd.content.sha;
+    toast('Audit deleted');
+    renderHistory();
+    renderTrends();
+    setStatus(auditHistory.length+' audit'+(auditHistory.length!==1?'s':'')+' remaining','');
+  }else{
+    auditHistory.push(auditHistory.find(a=>a.id===id));
+    toast('Delete failed');
+  }
+}
+
+/* ════════════════════════════════════════
+   DATA MODEL
+════════════════════════════════════════ */
+function makeRowData(){
+  const d={};
+  SETTING_GROUPS.forEach(g=>{d[g.key]={target:'',min:'',max:''};});
+  return d;
+}
+
+function makeDefaultRows(prefix){
+  return [
+    {id:rowId++,label:`1" ${prefix}`,type:'cb',data:{thickness:{target:'0.930',min:'',max:''},width:{target:'',min:'',max:''},length:{target:'',min:'',max:''},wane1:{target:'',min:'',max:''},wane2:{target:'',min:'',max:''},pricing:{target:'',min:'',max:''},kerf:{target:'',min:'',max:''}}},
+    {id:rowId++,label:`1" ${prefix} - SB`,type:'sb',data:makeRowData()},
+    {id:rowId++,label:`5/4" ${prefix}`,type:'cb',data:{thickness:{target:'1.460',min:'',max:''},width:{target:'',min:'',max:''},length:{target:'',min:'',max:''},wane1:{target:'',min:'',max:''},wane2:{target:'',min:'',max:''},pricing:{target:'',min:'',max:''},kerf:{target:'',min:'',max:''}}},
+    {id:rowId++,label:`5/4" ${prefix} - SB`,type:'sb',data:makeRowData()},
+    {id:rowId++,label:`6/4" ${prefix}`,type:'cb',data:{thickness:{target:'1.680',min:'',max:''},width:{target:'',min:'',max:''},length:{target:'',min:'',max:''},wane1:{target:'',min:'',max:''},wane2:{target:'',min:'',max:''},pricing:{target:'',min:'',max:''},kerf:{target:'',min:'',max:''}}},
+    {id:rowId++,label:`6/4" ${prefix} - SB`,type:'sb',data:makeRowData()},
+  ];
+}
+
+function makeMachineData(rows){
+  const d={};
+  rows.forEach(r=>{
+    d[r.id]={};
+    SETTING_GROUPS.forEach(g=>{
+      d[r.id][g.key]={target:r.data[g.key].target,min:r.data[g.key].min,max:r.data[g.key].max};
+    });
+  });
+  return d;
+}
+
+function initSpecies(){
+  const ppRows=makeDefaultRows('PP');
+  const spRows=makeDefaultRows('SP');
+  species=[
+    {id:1,name:'Ponderosa Pine',note:'',rows:ppRows,machines:[
+      {id:1,name:'Machine 2',data:makeMachineData(ppRows)},
+      {id:2,name:'Machine 3',data:makeMachineData(ppRows)},
+      {id:3,name:'Machine 4',data:makeMachineData(ppRows)},
+      {id:4,name:'Machine 5',data:makeMachineData(ppRows)},
+      {id:5,name:'Machine 6',data:makeMachineData(ppRows)},
+    ]},
+    {id:2,name:'Southern Pine',note:'',rows:spRows,machines:[
+      {id:1,name:'Machine 2',data:makeMachineData(spRows)},
+      {id:2,name:'Machine 3',data:makeMachineData(spRows)},
+      {id:3,name:'Machine 4',data:makeMachineData(spRows)},
+      {id:4,name:'Machine 5',data:makeMachineData(spRows)},
+      {id:5,name:'Machine 6',data:makeMachineData(spRows)},
+    ]},
+  ];
+  activeSp=1;
+}
+
+function getSp(){return species.find(s=>s.id===activeSp);}
+
+function getMRow(machine,rid){
+  if(!machine.data[rid]){
+    machine.data[rid]={};
+    SETTING_GROUPS.forEach(g=>machine.data[rid][g.key]={target:'',min:'',max:''});
+  }
+  return machine.data[rid];
+}
+
+function isDiff(a,b){
+  if(a===''&&b==='')return false;
+  if(a===''||b==='')return b!==''&&a!==b;
+  return parseFloat(a)!==parseFloat(b);
+}
+
+function pctClass(p){return p===100?'g':p>=75?'a':'r';}
+function pctBarColor(p){return p===100?'#639922':p>=75?'#EF9F27':'#E24B4A';}
+
+function calcAlign(sp){
+  let tot=0,match=0;
+  sp.rows.forEach(r=>{
+    sp.machines.forEach(m=>{
+      const md=getMRow(m,r.id);
+      SETTING_GROUPS.forEach(g=>{SUBFIELDS.forEach(sf=>{tot++;if(!isDiff(r.data[g.key][sf],md[g.key][sf]))match++;});});
+    });
+  });
+  return tot===0?100:Math.round(match/tot*100);
+}
+
+function calcMachineAlign(m,sp){
+  let tot=0,match=0;
+  sp.rows.forEach(r=>{
+    const md=getMRow(m,r.id);
+    SETTING_GROUPS.forEach(g=>{SUBFIELDS.forEach(sf=>{tot++;if(!isDiff(r.data[g.key][sf],md[g.key][sf]))match++;});});
+  });
+  return tot===0?100:Math.round(match/tot*100);
+}
+
+function calcSectionAlign(sp,gkey){
+  let tot=0,match=0;
+  sp.rows.forEach(r=>{
+    sp.machines.forEach(m=>{
+      const md=getMRow(m,r.id);
+      SUBFIELDS.forEach(sf=>{tot++;if(!isDiff(r.data[gkey][sf],md[gkey][sf]))match++;});
+    });
+  });
+  return tot===0?100:Math.round(match/tot*100);
+}
+
+function calcSectionDiffs(sp,gkey){
+  let diffs=0;
+  sp.rows.forEach(r=>{
+    sp.machines.forEach(m=>{
+      const md=getMRow(m,r.id);
+      SUBFIELDS.forEach(sf=>{if(isDiff(r.data[gkey][sf],md[gkey][sf]))diffs++;});
+    });
+  });
+  return diffs;
+}
+
+/* ════════════════════════════════════════
+   RENDER — AUDIT TABLE
+════════════════════════════════════════ */
+function renderTabs(){
+  let h='';
+  species.forEach(sp=>{
+    const p=calcAlign(sp);const pc=pctClass(p);
+    h+=`<div class="sp-tab${sp.id===activeSp?' active':''}" onclick="switchSp(${sp.id})">
+      <span>${sp.name}</span><span class="pct-pill ${pc}">${p}%</span>
+      ${species.length>1?`<button class="sp-del" onclick="event.stopPropagation();removeSp(${sp.id})">×</button>`:''}
+    </div>`;
+  });
+  document.getElementById('spTabs').innerHTML=h;
+}
+
+function renderSpInfo(){
+  const sp=getSp();
+  document.getElementById('spInfo').innerHTML=`<div class="sp-info">
+    <input class="sp-name" value="${sp.name}" placeholder="Species name" onchange="getSp().name=this.value;renderTabs()"/>
+    <span style="color:#D4D2CB;">|</span>
+    <input class="sp-note" value="${sp.note}" placeholder="Run notes, grade, QC notes…"/>
+  </div>`;
+}
+
+function renderTable(){
+  const sp=getSp();
+  const tbl=document.getElementById('mainTable');
+  const COL_LABEL=155,COL_VAL=52;
+  let cg=`<colgroup><col style="width:${COL_LABEL}px;min-width:${COL_LABEL}px;">`;
+  for(let i=0;i<(1+sp.machines.length);i++){for(let j=0;j<3;j++)cg+=`<col style="width:${COL_VAL}px">`;}
+  cg+=`</colgroup>`;
+  let h=`<thead><tr>
+    <th rowspan="2" style="text-align:left;padding-left:8px;vertical-align:bottom;min-width:${COL_LABEL}px;"><span style="color:#8C8C88;font-size:9px;">Product</span></th>
+    <th colspan="3" class="th-primary">Primary machine</th>`;
+  sp.machines.forEach((m,mi)=>{
+    const p=calcMachineAlign(m,sp);const pc=pctClass(p);
+    h+=`<th colspan="3" class="th-machine">
+      <input class="name-inp" value="${m.name}" title="Click to rename" onchange="getSp().machines[${mi}].name=this.value;render()"/>
+      <button class="del-btn" onclick="removeMachine(${mi})" title="Remove">×</button>
+      <span class="machine-align ${pc}">${p}% aligned</span>
+    </th>`;
+  });
+  h+=`</tr><tr>`;
+  for(let i=0;i<1+sp.machines.length;i++){h+=`<th>Target</th><th>Min</th><th>Max</th>`;}
+  h+=`</tr></thead><tbody>`;
+  SETTING_GROUPS.forEach(g=>{
+    const diffCount=calcSectionDiffs(sp,g.key);
+    const badge=diffCount>0
+      ?`<span class="sect-badge" style="background:rgba(252,235,235,0.25);color:#FCEBEB;">${diffCount} diff${diffCount>1?'s':''}</span>`
+      :`<span class="sect-badge" style="background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);">✓</span>`;
+    h+=`<tr><td class="th-section-${g.key}" colspan="${1+(1+sp.machines.length)*3}">${g.label} <span style="opacity:0.55;font-weight:400;font-size:10px;">${g.unit}</span>${badge}</td></tr>`;
+    sp.rows.forEach((row,ri)=>{
+      const rt=row.type;const lc=rt==='sb'?'sb-row':rt==='cb'?'cb-row':'';
+      const tl=rt==='sb'?'SB':rt==='cb'?'CB':'—';
+      h+=`<tr><td class="row-label ${lc}"><div class="row-label-wrap">
+        <input class="label-inp" value="${row.label}" onchange="getSp().rows[${ri}].label=this.value"/>
+        <button class="row-type-toggle" onclick="toggleRowType(${ri})">${tl}</button>
+      </div></td>`;
+      SUBFIELDS.forEach(sf=>{
+        h+=`<td class="prim-cell"><input type="text" value="${row.data[g.key][sf]}" placeholder="${sf}" onchange="getSp().rows[${ri}].data['${g.key}']['${sf}']=this.value;render()"/></td>`;
+      });
+      sp.machines.forEach((m,mi)=>{
+        const md=getMRow(m,row.id);
+        SUBFIELDS.forEach(sf=>{
+          const diff=isDiff(row.data[g.key][sf],md[g.key][sf]);
+          h+=`<td class="${diff?'diff-cell':'ok-cell'}"><input type="text" value="${md[g.key][sf]}" placeholder="${sf}" onchange="getSp().machines[${mi}].data[${row.id}]['${g.key}']['${sf}']=this.value;render()"/></td>`;
+        });
+      });
+      h+=`</tr>`;
+    });
+    h+=`<tr><td colspan="${1+(1+sp.machines.length)*3}" style="padding:3px 8px;background:#fff;">
+      <button class="add-row-btn" onclick="addProductRow()">+ add product row</button>
+    </td></tr>`;
+  });
+  h+=`</tbody>`;
+  tbl.innerHTML=cg+h;
+}
+
+function renderSummary(){
+  const sp=getSp();
+  let tot=0,diff=0;
+  sp.rows.forEach(r=>{sp.machines.forEach(m=>{const md=getMRow(m,r.id);SETTING_GROUPS.forEach(g=>{SUBFIELDS.forEach(sf=>{tot++;if(isDiff(r.data[g.key][sf],md[g.key][sf]))diff++;});});});});
+  const match=tot-diff;const pct=tot===0?100:Math.round(match/tot*100);const bc=pctBarColor(pct);
+  document.getElementById('summary').innerHTML=`
+    <div class="sc"><span class="v">${sp.rows.length}</span><span class="l">Product rows</span></div>
+    <div class="sc"><span class="v">${sp.machines.length}</span><span class="l">Machines</span></div>
+    <div class="sc g"><span class="v">${match}</span><span class="l">Values matched</span></div>
+    <div class="sc r"><span class="v">${diff}</span><span class="l">Differences</span></div>
+    <div class="align-bar-wrap">
+      <div><div style="font-size:10px;color:#5C5C58;margin-bottom:3px;">Overall alignment — ${sp.name}</div>
+      <div class="abar"><div class="abar-fill" style="width:${pct}%;background:${bc};"></div></div></div>
+      <span style="font-size:18px;font-weight:500;color:${bc};">${pct}%</span>
+    </div>`;
+}
+
+function renderCrossTable(){
+  const allMids=[...new Set(species.flatMap(sp=>sp.machines.map(m=>m.id)))];
+  const mNames={};
+  species.forEach(sp=>sp.machines.forEach(m=>mNames[m.id]=m.name));
+  let h=`<div class="cross-header"><span>Alignment across all species — per machine</span><span style="font-weight:400;font-size:10px;">${species.length} species</span></div>
+  <table class="ct"><thead><tr><th style="text-align:left;padding-left:10px;">Machine</th>`;
+  species.forEach(sp=>{const p=calcAlign(sp);h+=`<th>${sp.name}<br><span style="font-weight:400;">${p}%</span></th>`;});
+  h+=`<th>Average</th></tr></thead><tbody>`;
+  allMids.forEach(mid=>{
+    const name=mNames[mid]||`Machine ${mid}`;let pcts=[];
+    h+=`<tr><td class="mname">${name}</td>`;
+    species.forEach(sp=>{
+      const m=sp.machines.find(x=>x.id===mid);
+      if(m){const p=calcMachineAlign(m,sp);pcts.push(p);h+=`<td><span class="pill ${pctClass(p)}">${p}%</span></td>`;}
+      else{h+=`<td style="color:#8C8C88;">—</td>`;}
+    });
+    const avg=pcts.length?Math.round(pcts.reduce((a,b)=>a+b,0)/pcts.length):0;
+    h+=`<td><span class="pill ${pctClass(avg)}">${avg}%</span></td></tr>`;
+  });
+  h+=`</tbody></table>`;
+  document.getElementById('crossTable').innerHTML=h;
+}
+
+function render(){renderTabs();renderSpInfo();renderTable();renderSummary();renderCrossTable();}
+function switchSp(id){activeSp=id;render();}
+
+/* ════════════════════════════════════════
+   RENDER — HISTORY
+════════════════════════════════════════ */
+function renderHistory(){
+  const el=document.getElementById('historyList');
+  if(!auditHistory.length){
+    el.innerHTML=`<div class="history-empty">No audits saved yet.<br>Run your first audit and click "Save audit snapshot" to start building history.</div>`;
+    return;
+  }
+  const sorted=[...auditHistory].reverse();
+  el.innerHTML=sorted.map(a=>{
+    const date=new Date(a.date);
+    const dateStr=date.toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});
+    const timeStr=date.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+    const overallAvg=a.species.length?Math.round(a.species.reduce((s,sp)=>s+sp.alignment,0)/a.species.length):0;
+    const pc=pctClass(overallAvg);
+    const chips=a.species.map(sp=>`<span class="audit-meta-chip">${sp.name}: <strong>${sp.alignment}%</strong></span>`).join('');
+    return `<div class="audit-card">
+      <div class="audit-card-header">
+        <div>
+          <div class="audit-card-title">${a.label}</div>
+          <div class="audit-card-date">${dateStr} at ${timeStr}</div>
+        </div>
+        <span class="pill ${pc}">${overallAvg}% avg</span>
+      </div>
+      ${a.notes?`<div style="font-size:12px;color:#5C5C58;margin-bottom:6px;">${a.notes}</div>`:''}
+      <div class="audit-card-meta">${chips}</div>
+      <div class="audit-card-actions">
+        <button class="btn" onclick="exportSnapshotCSV(${a.id})">Export CSV</button>
+        <button class="btn" style="border-color:#A32D2D;color:#A32D2D;" onclick="deleteSnapshot(${a.id})">Delete</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ════════════════════════════════════════
+   RENDER — TRENDS
+════════════════════════════════════════ */
+function renderTrends(){
+  const el=document.getElementById('trendContent');
+  const sub=document.getElementById('trendSubtitle');
+  if(auditHistory.length<2){
+    el.innerHTML=`<div class="history-empty">Save at least 2 audit snapshots to see trends.<br>Trends show whether alignment is improving or declining over time.</div>`;
+    sub.textContent='';
+    return;
+  }
+  sub.textContent=`${auditHistory.length} audits`;
+  const allSpeciesNames=[...new Set(auditHistory.flatMap(a=>a.species.map(s=>s.name)))];
+  let html=`<div class="trend-grid">`;
+  allSpeciesNames.forEach(spName=>{
+    const snapshots=auditHistory.filter(a=>a.species.find(s=>s.name===spName)).slice(-6);
+    if(snapshots.length<1)return;
+    html+=`<div class="trend-card"><h3>${spName}</h3>`;
+    snapshots.forEach((snap,i)=>{
+      const sp=snap.species.find(s=>s.name===spName);
+      const pct=sp.alignment;const bc=pctBarColor(pct);const pc=pctClass(pct);
+      const prev=i>0?snapshots[i-1].species.find(s=>s.name===spName):null;
+      const arrow=prev===null?'':(pct>prev.alignment?'<span class="trend-arrow up">↑</span>':pct<prev.alignment?'<span class="trend-arrow down">↓</span>':'<span class="trend-arrow same">→</span>');
+      const label=snap.label.length>28?snap.label.slice(0,25)+'…':snap.label;
+      html+=`<div class="trend-row">
+        <div class="trend-label" title="${snap.label}">${label}</div>
+        <div class="trend-bar-wrap"><div class="trend-bar" style="width:${pct}%;background:${bc};"></div></div>
+        <span class="trend-pct" style="color:${bc};">${pct}%</span>
+        ${arrow}
+      </div>`;
+    });
+    const first=snapshots[0].species.find(s=>s.name===spName);
+    const last=snapshots[snapshots.length-1].species.find(s=>s.name===spName);
+    const delta=last.alignment-first.alignment;
+    const deltaStr=delta===0?'No change':(delta>0?`+${delta}% since first`:`${delta}% since first`);
+    const deltaColor=delta>0?'#27500A':delta<0?'#A32D2D':'#8C8C88';
+    html+=`<div style="margin-top:8px;font-size:11px;color:${deltaColor};font-weight:500;">${deltaStr}</div>`;
+    html+=`</div>`;
+  });
+  html+=`</div>`;
+  el.innerHTML=html;
+}
+
+/* ════════════════════════════════════════
+   ACTIONS
+════════════════════════════════════════ */
+function addSpecies(){
+  const id=spId++;
+  const rows=makeDefaultRows('NEW');
+  const existMachines=getSp()?getSp().machines.map(m=>({id:m.id,name:m.name,data:makeMachineData(rows)})):[];
+  const machines=existMachines.length?existMachines:[{id:1,name:'Machine 2',data:makeMachineData(rows)}];
+  species.push({id,name:'New species',note:'',rows,machines});
+  activeSp=id;render();
+}
+
+function removeSp(id){
+  if(species.length<=1)return;
+  species=species.filter(s=>s.id!==id);
+  if(activeSp===id)activeSp=species[0].id;
+  render();
+}
+
+function addMachine(){
+  const sp=getSp();const id=machineId++;
+  const newM={id,name:`Machine ${id}`,data:{}};
+  sp.rows.forEach(r=>{newM.data[r.id]={};SETTING_GROUPS.forEach(g=>newM.data[r.id][g.key]={target:r.data[g.key].target,min:r.data[g.key].min,max:r.data[g.key].max});});
+  sp.machines.push(newM);render();
+}
+
+function removeMachine(i){
+  const sp=getSp();if(sp.machines.length<=1)return;
+  sp.machines.splice(i,1);render();
+}
+
+function addProductRow(){
+  const sp=getSp();
+  const newRow={id:rowId++,label:'New product',type:'standard',data:makeRowData()};
+  sp.rows.push(newRow);
+  sp.machines.forEach(m=>{m.data[newRow.id]={};SETTING_GROUPS.forEach(g=>m.data[newRow.id][g.key]={target:'',min:'',max:''});});
+  render();
+}
+
+function toggleRowType(ri){
+  const sp=getSp();const row=sp.rows[ri];
+  const types=['standard','cb','sb'];
+  row.type=types[(types.indexOf(row.type)+1)%3];
+  render();
+}
+
+function exportCSV(){
+  const sp=getSp();
+  let rows=[['Species','Product','Type',...SETTING_GROUPS.flatMap(g=>[`${g.label} Target`,`${g.label} Min`,`${g.label} Max`]),...sp.machines.flatMap(m=>SETTING_GROUPS.flatMap(g=>[`${m.name} ${g.label} Target`,`${m.name} ${g.label} Min`,`${m.name} ${g.label} Max`]))]];
+  sp.rows.forEach(r=>{
+    const row=[sp.name,r.label,r.type,...SETTING_GROUPS.flatMap(g=>[r.data[g.key].target,r.data[g.key].min,r.data[g.key].max]),...sp.machines.flatMap(m=>{const md=getMRow(m,r.id);return SETTING_GROUPS.flatMap(g=>[md[g.key].target,md[g.key].min,md[g.key].max]);})];
+    rows.push(row);
+  });
+  downloadCSV(rows,`audit-${sp.name.replace(/\s+/g,'-')}`);
+}
+
+function exportSnapshotCSV(id){
+  const snap=auditHistory.find(a=>a.id===id);
+  if(!snap)return;
+  const rows=[['Species','Machine','Alignment %',...SETTING_GROUPS.map(g=>g.label+' alignment')]];
+  snap.species.forEach(sp=>{
+    sp.machineAlignments.forEach(m=>{
+      rows.push([sp.name,m.name,m.alignment+'%']);
+    });
+  });
+  downloadCSV(rows,`snapshot-${snap.label.replace(/\s+/g,'-')}`);
+}
+
+function downloadCSV(rows,name){
+  const csv=rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/csv,'+encodeURIComponent(csv);
+  a.download=`${name}.csv`;
+  a.click();
+}
+
+/* ════════════════════════════════════════
+   UI HELPERS
+════════════════════════════════════════ */
+function showTab(name){
+  ['audit','history','trends'].forEach(t=>{
+    document.getElementById('view-'+t).style.display=t===name?'block':'none';
+    document.getElementById('tab-'+t).classList.toggle('active',t===name);
+  });
+  if(name==='history')renderHistory();
+  if(name==='trends')renderTrends();
+}
+
+function openSaveModal(){
+  document.getElementById('auditLabel').value='';
+  document.getElementById('auditNotes').value='';
+  document.getElementById('saveModal').style.display='flex';
+  setTimeout(()=>document.getElementById('auditLabel').focus(),50);
+}
+function closeSaveModal(){document.getElementById('saveModal').style.display='none';}
+
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2800);
+}
+
+function setStatus(left,right){
+  document.getElementById('statusLeft').textContent=left;
+  document.getElementById('statusRight').textContent=right;
+}
+
+function setSyncStatus(msg){
+  document.getElementById('syncStatus').textContent=msg;
+}
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSaveModal();});
+
+/* ════════════════════════════════════════
+   BOOT
+════════════════════════════════════════ */
+checkStoredSetup();
+</script>
+</body>
+</html>
