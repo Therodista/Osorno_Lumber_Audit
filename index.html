@@ -75,8 +75,6 @@ th{font-weight:500;font-size:10px;color:#5C5C58;background:#F5F4F0;}
 .th-section-length{background:#3C3489;color:#EEEDFE;font-size:11px;font-weight:500;text-align:left;padding-left:8px;}
 .th-section-wane1{background:#633806;color:#FAEEDA;font-size:11px;font-weight:500;text-align:left;padding-left:8px;}
 .th-section-wane2{background:#854F0B;color:#FAEEDA;font-size:11px;font-weight:500;text-align:left;padding-left:8px;}
-.th-section-pricing{background:#0F6E56;color:#E1F5EE;font-size:11px;font-weight:500;text-align:left;padding-left:8px;}
-.th-section-kerf{background:#444441;color:#F1EFE8;font-size:11px;font-weight:500;text-align:left;padding-left:8px;}
 td.row-label{text-align:left;padding-left:8px;font-size:11px;color:#1A1A18;background:#fff;min-width:150px;max-width:200px;}
 td.row-label.sb-row{color:#5C5C58;font-style:italic;}
 td.row-label.cb-row{color:#185FA5;}
@@ -155,6 +153,72 @@ td.row-label.cb-row{color:#185FA5;}
 /* ── Status bar ── */
 .status-bar{background:#F5F4F0;border-top:0.5px solid #D4D2CB;padding:4px 1.5rem;font-size:10px;color:#8C8C88;display:flex;justify-content:space-between;align-items:center;position:sticky;bottom:0;}
 
+/* ── Pricing section ── */
+.pricing-wrap{margin-top:14px;border:0.5px solid #D4D2CB;border-radius:8px;overflow:hidden;}
+.pricing-section-header{background:#0F6E56;color:#E1F5EE;font-size:11px;font-weight:500;padding:7px 12px;display:flex;align-items:center;gap:6px;}
+.pricing-machine-block{border-top:0.5px solid #D4D2CB;}
+.pricing-machine-hdr{display:flex;align-items:center;gap:8px;padding:5px 10px;background:#F5F4F0;border-bottom:0.5px solid #D4D2CB;}
+.pricing-machine-hdr.prim{background:#FDF3E3;}
+.pmh-name{font-size:11px;font-weight:500;color:#1A1A18;flex:1;}
+.pricing-primary-tag{font-size:9px;font-weight:600;padding:1px 6px;border-radius:3px;background:#EF9F27;color:#fff;letter-spacing:0.05em;text-transform:uppercase;}
+.ptable{border-collapse:collapse;font-size:11px;min-width:100%;}
+.ptable th,.ptable td{border:0.5px solid #D4D2CB;padding:2px 4px;text-align:center;white-space:nowrap;}
+.ptable th{font-weight:500;font-size:10px;color:#5C5C58;background:#F5F4F0;}
+.len-col-inp{width:44px;border:none;background:transparent;font-size:10px;font-weight:500;text-align:center;outline:none;color:#5C5C58;cursor:text;}
+.len-col-inp:focus{outline:1px solid #C8C6BE;border-radius:2px;background:#fff;}
+.pcell{position:relative;padding:0!important;min-width:50px;height:26px;}
+.pcell input[type=text]{width:100%;height:100%;border:none;background:transparent;font-size:11px;text-align:center;outline:none;padding:0 4px 0 14px;}
+.pcell.prim-cell input{color:#633806;font-weight:500;}
+.pcell.diff-cell input{color:#791F1F;font-weight:500;}
+.pcell.pstar{outline:1.5px solid #DDA52A;outline-offset:-1.5px;}
+.pcell.pstar-diff{outline:1.5px solid #E24B4A;outline-offset:-1.5px;}
+.star-btn{position:absolute;top:2px;left:2px;background:none;border:none;cursor:pointer;font-size:9px;color:#D4D2CB;padding:0;line-height:1;z-index:1;}
+.star-btn:hover{color:#DDA52A;}
+.star-btn.starred{color:#DDA52A;}
+.pricing-summaries{display:flex;gap:10px;padding:10px;background:#F9F8F4;border-top:0.5px solid #D4D2CB;flex-wrap:wrap;}
+.pricing-summary-panel{flex:1;min-width:240px;background:#fff;border:0.5px solid #D4D2CB;border-radius:6px;padding:10px 12px;}
+.psp-header{font-size:11px;font-weight:500;color:#5C5C58;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:6px;}
+.psph-score{font-size:15px;font-weight:600;}
+.psp-empty{font-size:11px;color:#8C8C88;font-style:italic;}
+.psp-ok{font-size:11px;color:#27500A;}
+.pspm-item{display:flex;align-items:center;gap:6px;font-size:10px;padding:3px 0;border-bottom:0.5px solid #F0EFE9;flex-wrap:wrap;}
+.pspm-cell{font-weight:500;color:#1A1A18;min-width:100px;}
+.pspm-machine{color:#5C5C58;}
+.pspm-diff{color:#A32D2D;margin-left:auto;}
+.stacker-grid{display:flex;gap:12px;flex-wrap:wrap;}
+.stacker-col{flex:1;min-width:100px;}
+.stacker-col-label{font-size:10px;color:#8C8C88;font-weight:500;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:5px;}
+.stacker-row{display:flex;align-items:center;gap:5px;margin-bottom:4px;}
+.stacker-label{font-size:10px;color:#1A1A18;min-width:36px;}
+.stacker-bar-wrap{flex:1;height:5px;background:#F0EFE9;border-radius:3px;overflow:hidden;}
+.stacker-bar{height:100%;background:#0F6E56;border-radius:3px;}
+.stacker-pct{font-size:10px;color:#5C5C58;min-width:28px;text-align:right;}
+
+/* ── Kerf matrix ── */
+.kerf-wrap{margin-top:14px;border:0.5px solid #D4D2CB;border-radius:8px;overflow:hidden;}
+.kerf-section-header{background:#444441;color:#F1EFE8;font-size:11px;font-weight:500;padding:7px 12px;display:flex;align-items:center;gap:6px;}
+.ktable{border-collapse:collapse;font-size:11px;min-width:100%;}
+.ktable th,.ktable td{border:0.5px solid #D4D2CB;padding:3px 6px;text-align:center;white-space:nowrap;}
+.ktable th{font-weight:500;font-size:10px;color:#5C5C58;background:#F5F4F0;}
+.ktable th.kth-primary{background:#FDF3E3;color:#633806;}
+.ktable th.kth-match{color:#27500A;font-weight:400;font-size:9px;}
+.ktable th.kth-diff{color:#8A5A06;font-weight:400;font-size:9px;}
+.ktable td.krow-label{text-align:left;padding-left:8px;font-weight:500;color:#1A1A18;background:#fff;}
+.ktable td.krow-label.krow-primary{background:#FDF3E3;color:#633806;}
+.ktable td.kcell-primary{background:#FDF3E3;}
+.ktable td.kcell-primary input{background:transparent;border:none;width:70px;font-size:11px;text-align:center;color:#633806;font-weight:500;outline:none;}
+.ktable td.kcell-primary input:focus{outline:1px solid #BA7517;border-radius:2px;}
+.ktable td.kcell-diagonal{outline:1.5px solid #C8A24D;outline-offset:-1.5px;}
+.ktable td.kcell-diagonal input{background:transparent;border:none;width:70px;font-size:11px;text-align:center;color:#1A1A18;font-weight:500;outline:none;}
+.ktable td.kcell-diagonal input:focus{outline:1px solid #C8A24D;border-radius:2px;}
+.ktable td.kcell-diagonal.kcell-mismatch{background:#FBEAC8;}
+.ktable td.kcell-diagonal.kcell-mismatch input{color:#8A5A06;}
+.ktable td.kcell-muted{background:#F9F8F4;color:#C8C6BE;}
+.ktable td.kcell-muted input{background:transparent;border:none;width:70px;font-size:11px;text-align:center;color:#C8C6BE;outline:none;cursor:default;}
+.kerf-summary{padding:7px 12px;font-size:11px;color:#5C5C58;background:#F9F8F4;border-top:0.5px solid #D4D2CB;}
+.kerf-summary.all-match{color:#27500A;}
+.kerf-summary.has-diff{color:#8A5A06;}
+
 /* ── Loading ── */
 .loading{display:flex;align-items:center;justify-content:center;padding:3rem;color:#8C8C88;font-size:13px;gap:8px;}
 .spinner{width:16px;height:16px;border:2px solid #D4D2CB;border-top-color:#1A1A18;border-radius:50%;animation:spin 0.7s linear infinite;}
@@ -167,10 +231,24 @@ td.row-label.cb-row{color:#185FA5;}
 .modal p{font-size:13px;color:#5C5C58;margin-bottom:1rem;line-height:1.6;}
 .modal input,.modal textarea{width:100%;border:0.5px solid #C8C6BE;border-radius:6px;padding:8px 10px;font-size:13px;outline:none;margin-bottom:10px;font-family:inherit;}
 .modal input:focus,.modal textarea:focus{border-color:#BA7517;}
+.modal select{width:100%;border:0.5px solid #C8C6BE;border-radius:6px;padding:8px 10px;font-size:13px;outline:none;margin-bottom:10px;font-family:inherit;background:#fff;color:#1A1A18;cursor:pointer;}
+.modal select:focus{border-color:#BA7517;}
+.modal-label{display:block;font-size:11px;font-weight:500;color:#5C5C58;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.04em;}
+.modal-hint{font-size:11px;color:#8C8C88;margin-top:-6px;margin-bottom:10px;}
 .modal-actions{display:flex;gap:8px;justify-content:flex-end;}
 .modal-actions .btn-primary{width:auto;padding:7px 16px;}
 .modal-actions .btn-cancel{background:transparent;border:0.5px solid #C8C6BE;border-radius:6px;padding:7px 16px;font-size:13px;cursor:pointer;color:#5C5C58;}
 .modal-actions .btn-cancel:hover{background:#F5F4F0;}
+
+/* ── Wane rule sections ── */
+.wane-section{margin-top:14px;border:0.5px solid #D4D2CB;border-radius:8px;overflow:hidden;}
+.wane-section-header{display:flex;align-items:center;gap:8px;padding:7px 12px;font-size:11px;font-weight:500;}
+.wane-section-header.wane1{background:#633806;color:#FAEEDA;}
+.wane-section-header.wane2{background:#854F0B;color:#FAEEDA;}
+.wane-section-header input.wane-title-inp{background:transparent;border:none;outline:none;font-size:11px;font-weight:500;color:inherit;flex:1;min-width:0;}
+.wane-section-header input.wane-title-inp:focus{border-bottom:1px solid rgba(255,255,255,0.5);}
+.wane-add-grade-btn{font-size:10px;padding:2px 7px;cursor:pointer;border:0.5px dashed rgba(255,255,255,0.4);background:transparent;color:rgba(255,255,255,0.7);border-radius:3px;}
+.wane-add-grade-btn:hover{background:rgba(255,255,255,0.1);color:#fff;}
 </style>
 </head>
 <body>
@@ -224,10 +302,14 @@ td.row-label.cb-row{color:#185FA5;}
     </div>
     <div class="species-bar">
       <div class="sp-tabs" id="spTabs"></div>
-      <button class="add-sp" onclick="addSpecies()">+ Species</button>
+      <button class="add-sp" onclick="openSpeciesModal()">+ Species</button>
     </div>
     <div id="spInfo"></div>
     <div class="tscroll"><table id="mainTable"></table></div>
+    <div id="wane1Section"></div>
+    <div id="wane2Section"></div>
+    <div id="pricingSection"></div>
+    <div id="kerfSection"></div>
     <div class="summary" id="summary"></div>
     <div class="cross-table" id="crossTable"></div>
   </div>
@@ -270,6 +352,26 @@ td.row-label.cb-row{color:#185FA5;}
   </div>
 </div>
 
+<!-- Species Modal -->
+<div id="speciesModal" class="modal-overlay" style="display:none;">
+  <div class="modal">
+    <h2>Add species</h2>
+    <label class="modal-label">Species name</label>
+    <input type="text" id="spNameInput" placeholder="e.g. Southern Yellow Pine" oninput="onSpNameInput(this.value)"/>
+    <label class="modal-label">Grading body</label>
+    <select id="spGradingInput">
+      <option value="WWPA">WWPA — Western Wood Products Association</option>
+      <option value="SPIB">SPIB — Southern Pine Inspection Bureau</option>
+      <option value="custom">Custom grades</option>
+    </select>
+    <div class="modal-hint" id="spGradingHint"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeSpeciesModal()">Cancel</button>
+      <button class="btn-primary" onclick="confirmAddSpecies()">Add species</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <script>
@@ -283,14 +385,32 @@ const SETTING_GROUPS=[
   {key:'thickness',label:'Thickness',unit:'in'},
   {key:'width',label:'Width',unit:'in'},
   {key:'length',label:'Length',unit:'ft'},
-  {key:'wane1',label:'Primary wane',unit:'%'},
-  {key:'wane2',label:'Secondary wane',unit:'%'},
-  {key:'pricing',label:'Pricing',unit:'$/MBF'},
-  {key:'kerf',label:'Kerf',unit:'in'},
 ];
 const SUBFIELDS=['target','min','max'];
 
-let rowId=100, machineId=10, spId=10;
+const GRADE_PRESETS={
+  WWPA:['Select Structural','#1','#2','#3','C Select','D Select','#2 Common','#3 Common','#4 Common'],
+  SPIB:['Dense Select Structural','Select Structural','#1','#1 Dense','#2','#2 Dense','#3'],
+  custom:['Grade 1','Grade 2','Grade 3']
+};
+const SPECIES_GRADING_DEFAULTS={
+  'ponderosa pine':'WWPA','douglas fir':'WWPA','hem-fir':'WWPA','spruce-pine-fir':'WWPA','spf':'WWPA',
+  'southern pine':'SPIB','southern yellow pine':'SPIB','syp':'SPIB','slash pine':'SPIB','loblolly':'SPIB'
+};
+function guessGradingBody(name){
+  const lower=name.toLowerCase().trim();
+  for(const key of Object.keys(SPECIES_GRADING_DEFAULTS)){
+    if(lower.includes(key)||key.includes(lower))return SPECIES_GRADING_DEFAULTS[key];
+  }
+  return 'WWPA';
+}
+function makeWaneRows(gradingBody){
+  const grades=GRADE_PRESETS[gradingBody]||GRADE_PRESETS.custom;
+  return grades.map(g=>({id:waneRowId++,label:g}));
+}
+
+const DEFAULT_PRICE_LENGTHS=['6','8','10','12','14','16','18','20'];
+let rowId=100, machineId=10, spId=10, waneRowId=500;
 let species=[], activeSp=null;
 let auditHistory=[], historyFileSha='';
 
@@ -454,11 +574,11 @@ function makeRowData(){
 
 function makeDefaultRows(prefix){
   return [
-    {id:rowId++,label:`1" ${prefix}`,type:'cb',data:{thickness:{target:'0.930',min:'',max:''},width:{target:'',min:'',max:''},length:{target:'',min:'',max:''},wane1:{target:'',min:'',max:''},wane2:{target:'',min:'',max:''},pricing:{target:'',min:'',max:''},kerf:{target:'',min:'',max:''}}},
+    {id:rowId++,label:`1" ${prefix}`,type:'cb',data:{thickness:{target:'0.930',min:'',max:''},width:{target:'',min:'',max:''},length:{target:'',min:'',max:''}}},
     {id:rowId++,label:`1" ${prefix} - SB`,type:'sb',data:makeRowData()},
-    {id:rowId++,label:`5/4" ${prefix}`,type:'cb',data:{thickness:{target:'1.460',min:'',max:''},width:{target:'',min:'',max:''},length:{target:'',min:'',max:''},wane1:{target:'',min:'',max:''},wane2:{target:'',min:'',max:''},pricing:{target:'',min:'',max:''},kerf:{target:'',min:'',max:''}}},
+    {id:rowId++,label:`5/4" ${prefix}`,type:'cb',data:{thickness:{target:'1.460',min:'',max:''},width:{target:'',min:'',max:''},length:{target:'',min:'',max:''}}},
     {id:rowId++,label:`5/4" ${prefix} - SB`,type:'sb',data:makeRowData()},
-    {id:rowId++,label:`6/4" ${prefix}`,type:'cb',data:{thickness:{target:'1.680',min:'',max:''},width:{target:'',min:'',max:''},length:{target:'',min:'',max:''},wane1:{target:'',min:'',max:''},wane2:{target:'',min:'',max:''},pricing:{target:'',min:'',max:''},kerf:{target:'',min:'',max:''}}},
+    {id:rowId++,label:`6/4" ${prefix}`,type:'cb',data:{thickness:{target:'1.680',min:'',max:''},width:{target:'',min:'',max:''},length:{target:'',min:'',max:''}}},
     {id:rowId++,label:`6/4" ${prefix} - SB`,type:'sb',data:makeRowData()},
   ];
 }
@@ -477,20 +597,22 @@ function makeMachineData(rows){
 function initSpecies(){
   const ppRows=makeDefaultRows('PP');
   const spRows=makeDefaultRows('SP');
+  const ppW1=makeWaneRows('WWPA'),ppW2=makeWaneRows('WWPA');
+  const spW1=makeWaneRows('SPIB'),spW2=makeWaneRows('SPIB');
   species=[
-    {id:1,name:'Ponderosa Pine',note:'',rows:ppRows,machines:[
-      {id:1,name:'Machine 2',data:makeMachineData(ppRows)},
-      {id:2,name:'Machine 3',data:makeMachineData(ppRows)},
-      {id:3,name:'Machine 4',data:makeMachineData(ppRows)},
-      {id:4,name:'Machine 5',data:makeMachineData(ppRows)},
-      {id:5,name:'Machine 6',data:makeMachineData(ppRows)},
+    {id:1,name:'Ponderosa Pine',note:'',gradingBody:'WWPA',wane1Rows:ppW1,wane2Rows:ppW2,wane1Primary:{},wane2Primary:{},priceLengths:[...DEFAULT_PRICE_LENGTHS],pricePrimary:{},priceMachines:{},priceStars:{},kerfPrimary:{},kerfActual:{},rows:ppRows,machines:[
+      {id:1,name:'Machine 2',data:makeMachineData(ppRows),wane1:{},wane2:{}},
+      {id:2,name:'Machine 3',data:makeMachineData(ppRows),wane1:{},wane2:{}},
+      {id:3,name:'Machine 4',data:makeMachineData(ppRows),wane1:{},wane2:{}},
+      {id:4,name:'Machine 5',data:makeMachineData(ppRows),wane1:{},wane2:{}},
+      {id:5,name:'Machine 6',data:makeMachineData(ppRows),wane1:{},wane2:{}},
     ]},
-    {id:2,name:'Southern Pine',note:'',rows:spRows,machines:[
-      {id:1,name:'Machine 2',data:makeMachineData(spRows)},
-      {id:2,name:'Machine 3',data:makeMachineData(spRows)},
-      {id:3,name:'Machine 4',data:makeMachineData(spRows)},
-      {id:4,name:'Machine 5',data:makeMachineData(spRows)},
-      {id:5,name:'Machine 6',data:makeMachineData(spRows)},
+    {id:2,name:'Southern Pine',note:'',gradingBody:'SPIB',wane1Rows:spW1,wane2Rows:spW2,wane1Primary:{},wane2Primary:{},priceLengths:[...DEFAULT_PRICE_LENGTHS],pricePrimary:{},priceMachines:{},priceStars:{},kerfPrimary:{},kerfActual:{},rows:spRows,machines:[
+      {id:1,name:'Machine 2',data:makeMachineData(spRows),wane1:{},wane2:{}},
+      {id:2,name:'Machine 3',data:makeMachineData(spRows),wane1:{},wane2:{}},
+      {id:3,name:'Machine 4',data:makeMachineData(spRows),wane1:{},wane2:{}},
+      {id:4,name:'Machine 5',data:makeMachineData(spRows),wane1:{},wane2:{}},
+      {id:5,name:'Machine 6',data:makeMachineData(spRows),wane1:{},wane2:{}},
     ]},
   ];
   activeSp=1;
@@ -675,7 +797,344 @@ function renderCrossTable(){
   document.getElementById('crossTable').innerHTML=h;
 }
 
-function render(){renderTabs();renderSpInfo();renderTable();renderSummary();renderCrossTable();}
+function renderWaneSection(wk,elId){
+  const sp=getSp();
+  const el=document.getElementById(elId);
+  if(!el)return;
+  const waneRows=sp[wk+'Rows']||[];
+  const primary=sp[wk+'Primary']||{};
+  const isWane1=wk==='wane1';
+  const colorClass=isWane1?'wane1':'wane2';
+  const defaultTitle=`${sp.name} — ${isWane1?'Primary':'Secondary'} Wane`;
+  const titleKey=wk+'Title';
+  if(!sp[titleKey])sp[titleKey]=defaultTitle;
+
+  const COL_LABEL=155,COL_VAL=52;
+  let cg=`<colgroup><col style="width:${COL_LABEL}px;min-width:${COL_LABEL}px;">`;
+  for(let i=0;i<(1+sp.machines.length);i++){for(let j=0;j<3;j++)cg+=`<col style="width:${COL_VAL}px">`;}
+  cg+=`</colgroup>`;
+
+  let h=`<div class="wane-section">`;
+  h+=`<div class="wane-section-header ${colorClass}">
+    <input class="wane-title-inp" value="${sp[titleKey]}" onchange="getSp()['${titleKey}']=this.value"/>
+    <button class="wane-add-grade-btn" onclick="addWaneRow('${wk}')">+ grade</button>
+  </div>`;
+  h+=`<div class="tscroll"><table>`;
+  h+=cg;
+  h+=`<thead><tr>
+    <th rowspan="2" style="text-align:left;padding-left:8px;vertical-align:bottom;min-width:${COL_LABEL}px;"><span style="color:#8C8C88;font-size:9px;">Grade</span></th>
+    <th colspan="3" class="th-primary">Primary machine</th>`;
+  sp.machines.forEach((m,mi)=>{
+    h+=`<th colspan="3" class="th-machine">
+      <span style="font-size:11px;font-weight:500;">${m.name}</span>
+    </th>`;
+  });
+  h+=`</tr><tr>`;
+  for(let i=0;i<1+sp.machines.length;i++){h+=`<th>% Length</th><th>% Edge</th><th>% Face</th>`;}
+  h+=`</tr></thead><tbody>`;
+
+  waneRows.forEach((row,ri)=>{
+    const pv=primary[row.id]||{target:'',min:'',max:''};
+    h+=`<tr><td class="row-label"><div class="row-label-wrap">
+      <input class="label-inp" value="${row.label}" onchange="getSp()['${wk}Rows'][${ri}].label=this.value"/>
+      <button class="del-btn" onclick="removeWaneRow('${wk}',${ri})" title="Remove grade">×</button>
+    </div></td>`;
+    const wanePH={target:'% Len',min:'% Edge',max:'% Face'};
+    SUBFIELDS.forEach(sf=>{
+      h+=`<td class="prim-cell"><input type="text" value="${pv[sf]||''}" placeholder="${wanePH[sf]}" onchange="setWanePrimary('${wk}',${row.id},'${sf}',this.value)"/></td>`;
+    });
+    sp.machines.forEach((m,mi)=>{
+      const mv=(m[wk]&&m[wk][row.id])||{target:'',min:'',max:''};
+      SUBFIELDS.forEach(sf=>{
+        const diff=isDiff(pv[sf]||'',mv[sf]||'');
+        h+=`<td class="${diff?'diff-cell':'ok-cell'}"><input type="text" value="${mv[sf]||''}" placeholder="${wanePH[sf]}" onchange="setWaneMachine(${mi},'${wk}',${row.id},'${sf}',this.value)"/></td>`;
+      });
+    });
+    h+=`</tr>`;
+  });
+
+  if(waneRows.length===0){
+    h+=`<tr><td colspan="${1+(1+sp.machines.length)*3}" style="padding:8px;text-align:center;color:#8C8C88;font-size:11px;background:#fff;">No grades — click "+ grade" to add one.</td></tr>`;
+  }
+  h+=`</tbody></table></div></div>`;
+  el.innerHTML=h;
+}
+
+function setWanePrimary(wk,rid,sf,val){
+  const sp=getSp();
+  if(!sp[wk+'Primary'][rid])sp[wk+'Primary'][rid]={target:'',min:'',max:''};
+  sp[wk+'Primary'][rid][sf]=val;
+  renderWaneSection(wk,wk==='wane1'?'wane1Section':'wane2Section');
+}
+function setWaneMachine(mi,wk,rid,sf,val){
+  const sp=getSp();
+  const m=sp.machines[mi];
+  if(!m[wk])m[wk]={};
+  if(!m[wk][rid])m[wk][rid]={target:'',min:'',max:''};
+  m[wk][rid][sf]=val;
+  renderWaneSection(wk,wk==='wane1'?'wane1Section':'wane2Section');
+}
+function addWaneRow(wk){
+  const sp=getSp();
+  sp[wk+'Rows'].push({id:waneRowId++,label:'New grade'});
+  renderWaneSection(wk,wk==='wane1'?'wane1Section':'wane2Section');
+}
+function removeWaneRow(wk,ri){
+  const sp=getSp();
+  sp[wk+'Rows'].splice(ri,1);
+  renderWaneSection(wk,wk==='wane1'?'wane1Section':'wane2Section');
+}
+
+/* ════════════════════════════════════════
+   RENDER — PRICING
+════════════════════════════════════════ */
+function renderPricingSection(){
+  const sp=getSp();
+  const el=document.getElementById('pricingSection');
+  if(!el)return;
+  if(!sp.priceLengths)sp.priceLengths=[...DEFAULT_PRICE_LENGTHS];
+  if(!sp.pricePrimary)sp.pricePrimary={};
+  if(!sp.priceMachines)sp.priceMachines={};
+  if(!sp.priceStars)sp.priceStars={};
+  const lens=sp.priceLengths;
+  const primary=sp.pricePrimary;
+  const pmach=sp.priceMachines;
+  const pstars=sp.priceStars;
+  let diffCount=0;
+  sp.rows.forEach(r=>{sp.machines.forEach(m=>{const md=(pmach[m.id]||{})[r.id]||{};const pd=primary[r.id]||{};lens.forEach((_,li)=>{if(isDiff(pd[li]||'',md[li]||''))diffCount++;});});});
+  const badge=diffCount>0?`<span class="sect-badge" style="background:rgba(252,235,235,0.25);color:#FCEBEB;">${diffCount} diff${diffCount>1?'s':''}</span>`:`<span class="sect-badge" style="background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);">✓</span>`;
+  let h=`<div class="pricing-wrap">`;
+  h+=`<div class="pricing-section-header">Pricing <span style="opacity:0.55;font-weight:400;font-size:10px;">$/MBF</span>${badge}</div>`;
+  h+=renderPriceMachineTable('primary','Primary machine',true,lens,primary,primary,pstars,sp);
+  sp.machines.forEach(m=>{
+    const mData=pmach[m.id]||{};
+    let tot=0,match=0;
+    sp.rows.forEach(r=>{const pd=primary[r.id]||{};const md=mData[r.id]||{};lens.forEach((_,li)=>{tot++;if(!isDiff(pd[li]||'',md[li]||''))match++;});});
+    const pct=tot===0?100:Math.round(match/tot*100);
+    h+=renderPriceMachineTable(m.id,m.name,false,lens,mData,primary,pstars,sp,pct);
+  });
+  h+=renderPriceSummary(sp,lens,primary,pmach,pstars);
+  h+=`</div>`;
+  el.innerHTML=h;
+}
+
+function renderPriceMachineTable(mKey,mName,isPrimary,lens,mData,primary,pstars,sp,alignPct){
+  const mStars=pstars[mKey]||{};
+  let h=`<div class="pricing-machine-block">`;
+  h+=`<div class="pricing-machine-hdr ${isPrimary?'prim':''}">`;
+  h+=`<span class="pmh-name">${mName}</span>`;
+  if(isPrimary)h+=`<span class="pricing-primary-tag">Primary</span>`;
+  else{const pc=pctClass(alignPct);h+=`<span class="machine-align ${pc}">${alignPct}% aligned</span>`;}
+  h+=`</div>`;
+  h+=`<div class="tscroll"><table class="ptable">`;
+  h+=`<colgroup><col style="width:155px;min-width:155px;">`;
+  lens.forEach(()=>h+=`<col style="width:54px;">`);
+  h+=`</colgroup>`;
+  h+=`<thead><tr><th style="text-align:left;padding-left:8px;font-size:9px;color:#8C8C88;font-weight:400;">Product</th>`;
+  lens.forEach((l,li)=>{
+    if(isPrimary)h+=`<th style="padding:2px;"><input class="len-col-inp" value="${l}'" onchange="updatePriceLength(${li},this.value)" title="Edit length"/></th>`;
+    else h+=`<th>${lens[li]}'</th>`;
+  });
+  h+=`</tr></thead><tbody>`;
+  sp.rows.forEach((row,ri)=>{
+    const rt=row.type;const lc=rt==='sb'?'sb-row':rt==='cb'?'cb-row':'';const tl=rt==='sb'?'SB':rt==='cb'?'CB':'—';
+    const rowData=mData[row.id]||{};const rowStars=mStars[row.id]||{};const primRowData=primary[row.id]||{};
+    h+=`<tr><td class="row-label ${lc}"><div class="row-label-wrap">`;
+    if(isPrimary){h+=`<input class="label-inp" value="${row.label}" onchange="getSp().rows[${ri}].label=this.value;render()"/>`;h+=`<button class="row-type-toggle" onclick="toggleRowType(${ri})">${tl}</button>`;}
+    else h+=`<span style="font-size:11px;">${row.label}</span>`;
+    h+=`</div></td>`;
+    lens.forEach((_,li)=>{
+      const price=rowData[li]||'';const primPrice=primRowData[li]||'';
+      const starred=rowStars[li]||false;
+      const diffFlag=!isPrimary&&isDiff(primPrice,price);
+      let cellCls=isPrimary?'prim-cell':'ok-cell';
+      if(diffFlag)cellCls='diff-cell';
+      if(starred)cellCls+=(diffFlag?' pstar-diff':' pstar');
+      h+=`<td class="pcell ${cellCls}">`;
+      h+=`<button class="star-btn${starred?' starred':''}" onclick="togglePriceStar('${mKey}',${row.id},${li})">${starred?'★':'☆'}</button>`;
+      h+=`<input type="text" value="${price}" placeholder="—" onchange="setPriceCell('${mKey}',${row.id},${li},this.value)"/>`;
+      h+=`</td>`;
+    });
+    h+=`</tr>`;
+  });
+  h+=`</tbody></table></div></div>`;
+  return h;
+}
+
+function renderPriceSummary(sp,lens,primary,pmach,pstars){
+  const primaryStars=pstars['primary']||{};
+  let starred=[];
+  sp.rows.forEach(r=>{
+    const rs=primaryStars[r.id]||{};
+    lens.forEach((_,li)=>{if(rs[li])starred.push({rowId:r.id,li,label:r.label,length:lens[li]});});
+  });
+  let totalComp=0,matchedComp=0,misaligned=[];
+  starred.forEach(item=>{
+    const pp=(primary[item.rowId]||{})[item.li]||'';
+    sp.machines.forEach(m=>{
+      const mp=((pmach[m.id]||{})[item.rowId]||{})[item.li]||'';
+      totalComp++;
+      if(!isDiff(pp,mp))matchedComp++;
+      else misaligned.push({label:item.label,length:item.length,machine:m.name,pv:pp,mv:mp});
+    });
+  });
+  const ap=totalComp===0?100:Math.round(matchedComp/totalComp*100);
+  const bc=pctBarColor(ap);
+  const apStr=totalComp===0?'—':ap+'%';
+  let dimCount={},lenCount={},totalStars=0;
+  Object.keys(pstars).forEach(mKey=>{
+    const ms=pstars[mKey];
+    sp.rows.forEach(r=>{
+      const rs=ms[r.id]||{};
+      lens.forEach((_,li)=>{
+        if(rs[li]){totalStars++;const dim=r.label.replace(/\s+(PP|SP|NEW|SB).*$/i,'').trim();dimCount[dim]=(dimCount[dim]||0)+1;const l=lens[li]||li;lenCount[l]=(lenCount[l]||0)+1;}
+      });
+    });
+  });
+  let h=`<div class="pricing-summaries">`;
+  h+=`<div class="pricing-summary-panel">`;
+  h+=`<div class="psp-header">Priority alignment <span class="psph-score" style="color:${bc};">${apStr}</span></div>`;
+  if(totalComp===0){h+=`<div class="psp-empty">Star cells on the primary table to track priority targets across machines.</div>`;}
+  else if(misaligned.length===0){h+=`<div class="psp-ok">All ${totalComp} starred comparison${totalComp!==1?'s':''} match ✓</div>`;}
+  else{
+    h+=`<div style="margin-bottom:6px;"><div class="abar" style="width:100%;"><div class="abar-fill" style="width:${ap}%;background:${bc};"></div></div></div>`;
+    h+=`<div class="psp-misaligned-list">`;
+    misaligned.forEach(m=>{h+=`<div class="pspm-item"><span class="pspm-cell">${m.label} · ${m.length}'</span><span class="pspm-machine">${m.machine}</span><span class="pspm-diff">Primary: <strong>${m.pv||'—'}</strong> vs <strong>${m.mv||'—'}</strong></span></div>`;});
+    h+=`</div>`;
+  }
+  h+=`</div>`;
+  h+=`<div class="pricing-summary-panel">`;
+  h+=`<div class="psp-header">Expected stacker output <span style="font-size:10px;color:#8C8C88;font-weight:400;">${totalStars} starred target${totalStars!==1?'s':''}</span></div>`;
+  if(totalStars===0){h+=`<div class="psp-empty">Star cells across machine tables to estimate output mix.</div>`;}
+  else{
+    h+=`<div class="stacker-grid">`;
+    h+=`<div class="stacker-col"><div class="stacker-col-label">By dimension</div>`;
+    Object.entries(dimCount).sort((a,b)=>b[1]-a[1]).forEach(([dim,cnt])=>{const pct=Math.round(cnt/totalStars*100);h+=`<div class="stacker-row"><span class="stacker-label">${dim}</span><div class="stacker-bar-wrap"><div class="stacker-bar" style="width:${pct}%;"></div></div><span class="stacker-pct">${pct}%</span></div>`;});
+    h+=`</div><div class="stacker-col"><div class="stacker-col-label">By length</div>`;
+    Object.entries(lenCount).sort((a,b)=>parseInt(a[0])-parseInt(b[0])).forEach(([l,cnt])=>{const pct=Math.round(cnt/totalStars*100);h+=`<div class="stacker-row"><span class="stacker-label">${l}'</span><div class="stacker-bar-wrap"><div class="stacker-bar" style="width:${pct}%;"></div></div><span class="stacker-pct">${pct}%</span></div>`;});
+    h+=`</div></div>`;
+  }
+  h+=`</div></div>`;
+  return h;
+}
+
+function setPriceCell(mKey,rowId,lenIdx,val){
+  const sp=getSp();
+  if(!sp.pricePrimary)sp.pricePrimary={};
+  if(!sp.priceMachines)sp.priceMachines={};
+  if(String(mKey)==='primary'){
+    if(!sp.pricePrimary[rowId])sp.pricePrimary[rowId]={};
+    sp.pricePrimary[rowId][lenIdx]=val;
+  }else{
+    if(!sp.priceMachines[mKey])sp.priceMachines[mKey]={};
+    if(!sp.priceMachines[mKey][rowId])sp.priceMachines[mKey][rowId]={};
+    sp.priceMachines[mKey][rowId][lenIdx]=val;
+  }
+  renderPricingSection();
+}
+function togglePriceStar(mKey,rowId,lenIdx){
+  const sp=getSp();
+  if(!sp.priceStars)sp.priceStars={};
+  if(!sp.priceStars[mKey])sp.priceStars[mKey]={};
+  if(!sp.priceStars[mKey][rowId])sp.priceStars[mKey][rowId]={};
+  sp.priceStars[mKey][rowId][lenIdx]=!sp.priceStars[mKey][rowId][lenIdx];
+  renderPricingSection();
+}
+function updatePriceLength(li,val){
+  const sp=getSp();
+  if(!sp.priceLengths)sp.priceLengths=[...DEFAULT_PRICE_LENGTHS];
+  sp.priceLengths[li]=val.replace(/'/g,'').trim();
+  renderPricingSection();
+}
+
+/* ════════════════════════════════════════
+   RENDER — KERF MATRIX
+════════════════════════════════════════ */
+function renderKerfSection(){
+  const sp=getSp();
+  const el=document.getElementById('kerfSection');
+  if(!el)return;
+  if(!sp.kerfPrimary)sp.kerfPrimary={};
+  if(!sp.kerfActual)sp.kerfActual={};
+  const kp=sp.kerfPrimary;  // { 'primary': val, [machineId]: val }
+  const ka=sp.kerfActual;   // { [machineId]: val }
+  // Rows: primary first, then each machine
+  const allRows=[{id:'primary',name:'Primary machine',isPrimary:true},...sp.machines];
+  // Columns: same order
+  const allCols=[{id:'primary',name:'Primary machine',isPrimary:true},...sp.machines];
+  // Diff count for badge
+  let diffCount=0;
+  sp.machines.forEach(m=>{if(isDiff(kp[m.id]||'',ka[m.id]||''))diffCount++;});
+  const badge=diffCount>0?`<span class="sect-badge" style="background:rgba(252,235,235,0.25);color:#FBEAC8;">${diffCount} diff${diffCount>1?'s':''}</span>`:`<span class="sect-badge" style="background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);">✓</span>`;
+  let h=`<div class="kerf-wrap">`;
+  h+=`<div class="kerf-section-header">Kerf <span style="opacity:0.55;font-weight:400;font-size:10px;">in</span>${badge}</div>`;
+  h+=`<div class="tscroll"><table class="ktable">`;
+  // Colgroup
+  h+=`<colgroup><col style="width:140px;min-width:140px;">`;
+  allCols.forEach(()=>h+=`<col style="width:90px;">`);
+  h+=`</colgroup>`;
+  // Header row
+  h+=`<thead><tr><th style="text-align:left;padding-left:8px;font-size:9px;color:#8C8C88;font-weight:400;">Machine center</th>`;
+  allCols.forEach(col=>{
+    if(col.isPrimary){
+      h+=`<th class="kth-primary">Primary machine<br><span style="font-size:9px;font-weight:400;opacity:0.7;">PRIMARY</span></th>`;
+    }else{
+      const predicted=kp[col.id]||'';const actual=ka[col.id]||'';
+      const matches=predicted!==''&&actual!==''&&!isDiff(predicted,actual);
+      const differs=predicted!==''&&actual!==''&&isDiff(predicted,actual);
+      const subLabel=matches?`<span class="kth-match">matches prediction</span>`:differs?`<span class="kth-diff">differs from prediction</span>`:`<span style="font-size:9px;color:#C8C6BE;">—</span>`;
+      h+=`<th>${col.name}<br>${subLabel}</th>`;
+    }
+  });
+  h+=`</tr></thead><tbody>`;
+  // Body rows
+  allRows.forEach(row=>{
+    const rowIsPrimary=row.isPrimary;
+    h+=`<tr><td class="krow-label${rowIsPrimary?' krow-primary':''}">${row.name}</td>`;
+    allCols.forEach(col=>{
+      const colIsPrimary=col.isPrimary;
+      if(colIsPrimary){
+        // Primary column — always editable
+        const rowKey=row.isPrimary?'primary':row.id;
+        const val=kp[rowKey]||'';
+        h+=`<td class="kcell-primary"><input type="text" value="${val}" placeholder="0.000" onchange="setKerfPrimary('${rowKey}',this.value)"/></td>`;
+      }else{
+        // Downstream column
+        const isDiag=!row.isPrimary&&row.id===col.id;
+        if(isDiag){
+          const actual=ka[col.id]||'';const predicted=kp[col.id]||'';
+          const mismatch=predicted!==''&&actual!==''&&isDiff(predicted,actual);
+          h+=`<td class="kcell-diagonal${mismatch?' kcell-mismatch':''}"><input type="text" value="${actual}" placeholder="0.000" onchange="setKerfActual(${col.id},this.value)"/></td>`;
+        }else{
+          // Muted — show nothing editable
+          h+=`<td class="kcell-muted"><input type="text" value="" placeholder="—" disabled/></td>`;
+        }
+      }
+    });
+    h+=`</tr>`;
+  });
+  h+=`</tbody></table></div>`;
+  // Summary line
+  const mismatches=sp.machines.filter(m=>isDiff(kp[m.id]||'',ka[m.id]||'')&&(kp[m.id]||'')!==''&&(ka[m.id]||'')!=='');
+  if(mismatches.length===0){
+    h+=`<div class="kerf-summary all-match">All downstream centers match the primary's prediction.</div>`;
+  }else{
+    const list=mismatches.map(m=>`${m.name} (predicted ${kp[m.id]}, actual ${ka[m.id]})`).join('; ');
+    h+=`<div class="kerf-summary has-diff">${mismatches.length} mismatch${mismatches.length>1?'es':''}: ${list}</div>`;
+  }
+  h+=`</div>`;
+  el.innerHTML=h;
+}
+function setKerfPrimary(rowKey,val){
+  const sp=getSp();if(!sp.kerfPrimary)sp.kerfPrimary={};
+  sp.kerfPrimary[rowKey]=val;renderKerfSection();
+}
+function setKerfActual(machineId,val){
+  const sp=getSp();if(!sp.kerfActual)sp.kerfActual={};
+  sp.kerfActual[machineId]=val;renderKerfSection();
+}
+
+function render(){renderTabs();renderSpInfo();renderTable();renderWaneSection('wane1','wane1Section');renderWaneSection('wane2','wane2Section');renderPricingSection();renderKerfSection();renderSummary();renderCrossTable();}
 function switchSp(id){activeSp=id;render();}
 
 /* ════════════════════════════════════════
@@ -759,12 +1218,35 @@ function renderTrends(){
 /* ════════════════════════════════════════
    ACTIONS
 ════════════════════════════════════════ */
-function addSpecies(){
+function openSpeciesModal(){
+  document.getElementById('spNameInput').value='';
+  document.getElementById('spGradingInput').value='WWPA';
+  document.getElementById('spGradingHint').textContent='';
+  document.getElementById('speciesModal').style.display='flex';
+  setTimeout(()=>document.getElementById('spNameInput').focus(),50);
+}
+function closeSpeciesModal(){document.getElementById('speciesModal').style.display='none';}
+function onSpNameInput(val){
+  const gb=guessGradingBody(val);
+  document.getElementById('spGradingInput').value=gb;
+  document.getElementById('spGradingHint').textContent=val.trim()?`Auto-suggested: ${gb}`:'';
+}
+function confirmAddSpecies(){
+  const name=document.getElementById('spNameInput').value.trim()||'New species';
+  const gb=document.getElementById('spGradingInput').value;
+  closeSpeciesModal();
+  addSpecies(name,gb);
+}
+function addSpecies(name,gradingBody){
+  name=name||'New species';
+  gradingBody=gradingBody||'WWPA';
   const id=spId++;
   const rows=makeDefaultRows('NEW');
-  const existMachines=getSp()?getSp().machines.map(m=>({id:m.id,name:m.name,data:makeMachineData(rows)})):[];
-  const machines=existMachines.length?existMachines:[{id:1,name:'Machine 2',data:makeMachineData(rows)}];
-  species.push({id,name:'New species',note:'',rows,machines});
+  const w1=makeWaneRows(gradingBody);
+  const w2=makeWaneRows(gradingBody);
+  const existMachines=getSp()?getSp().machines.map(m=>({id:m.id,name:m.name,data:makeMachineData(rows),wane1:{},wane2:{}})):[];
+  const machines=existMachines.length?existMachines:[{id:1,name:'Machine 2',data:makeMachineData(rows),wane1:{},wane2:{}}];
+  species.push({id,name,note:'',gradingBody,wane1Rows:w1,wane2Rows:w2,wane1Primary:{},wane2Primary:{},priceLengths:[...DEFAULT_PRICE_LENGTHS],pricePrimary:{},priceMachines:{},priceStars:{},rows,machines});
   activeSp=id;render();
 }
 
