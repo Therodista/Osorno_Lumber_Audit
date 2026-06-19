@@ -172,9 +172,9 @@ td.row-label.cb-row{color:#185FA5;}
 .pcell.diff-cell input{color:#791F1F;font-weight:500;}
 .pcell.pstar{outline:1.5px solid #DDA52A;outline-offset:-1.5px;}
 .pcell.pstar-diff{outline:1.5px solid #E24B4A;outline-offset:-1.5px;}
-.star-btn{position:absolute;top:2px;left:2px;background:none;border:none;cursor:pointer;font-size:9px;color:#D4D2CB;padding:0;line-height:1;z-index:1;}
-.star-btn:hover{color:#DDA52A;}
-.star-btn.starred{color:#DDA52A;}
+.pcell .star-btn{position:absolute;top:2px;left:2px;background:none;border:none;cursor:pointer;font-size:9px;color:#D4D2CB;padding:0;line-height:1;z-index:1;}
+.pcell .star-btn:hover{color:#DDA52A;}
+.pcell .star-btn.starred{color:#DDA52A;}
 .pricing-summaries{display:flex;gap:10px;padding:10px;background:#F9F8F4;border-top:0.5px solid #D4D2CB;flex-wrap:wrap;}
 .pricing-summary-panel{flex:1;min-width:240px;background:#fff;border:0.5px solid #D4D2CB;border-radius:6px;padding:10px 12px;}
 .psp-header{font-size:11px;font-weight:500;color:#5C5C58;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:6px;}
@@ -249,6 +249,9 @@ td.row-label.cb-row{color:#185FA5;}
 .wane-section-header input.wane-title-inp:focus{border-bottom:1px solid rgba(255,255,255,0.5);}
 .wane-add-grade-btn{font-size:10px;padding:2px 7px;cursor:pointer;border:0.5px dashed rgba(255,255,255,0.4);background:transparent;color:rgba(255,255,255,0.7);border-radius:3px;}
 .wane-add-grade-btn:hover{background:rgba(255,255,255,0.1);color:#fff;}
+.star-btn{background:none;border:none;cursor:pointer;font-size:12px;padding:0 2px;color:rgba(255,255,255,0.4);line-height:1;}
+.star-btn.active{color:#FFD700;}
+.star-btn:hover{color:#FFD700;}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
 </head>
@@ -618,14 +621,14 @@ function initSpecies(){
   const ppW1=makeWaneRows('WWPA'),ppW2=makeWaneRows('WWPA');
   const spW1=makeWaneRows('SPIB'),spW2=makeWaneRows('SPIB');
   species=[
-    {id:1,name:'Ponderosa Pine',note:'',gradingBody:'WWPA',wane1Rows:ppW1,wane2Rows:ppW2,wane1Primary:{},wane2Primary:{},priceLengths:[...DEFAULT_PRICE_LENGTHS],pricePrimary:{},priceMachines:{},priceStars:{},kerfPrimary:{},kerfActual:{},rows:ppRows,machines:[
+    {id:1,name:'Ponderosa Pine',note:'',gradingBody:'WWPA',primaryMachineId:null,wane1Rows:ppW1,wane2Rows:ppW2,wane1Primary:{},wane2Primary:{},priceLengths:[...DEFAULT_PRICE_LENGTHS],pricePrimary:{},priceMachines:{},priceStars:{},kerfPrimary:{},kerfActual:{},rows:ppRows,machines:[
       {id:1,name:'Machine 2',data:makeMachineData(ppRows),wane1:{},wane2:{}},
       {id:2,name:'Machine 3',data:makeMachineData(ppRows),wane1:{},wane2:{}},
       {id:3,name:'Machine 4',data:makeMachineData(ppRows),wane1:{},wane2:{}},
       {id:4,name:'Machine 5',data:makeMachineData(ppRows),wane1:{},wane2:{}},
       {id:5,name:'Machine 6',data:makeMachineData(ppRows),wane1:{},wane2:{}},
     ]},
-    {id:2,name:'Southern Pine',note:'',gradingBody:'SPIB',wane1Rows:spW1,wane2Rows:spW2,wane1Primary:{},wane2Primary:{},priceLengths:[...DEFAULT_PRICE_LENGTHS],pricePrimary:{},priceMachines:{},priceStars:{},kerfPrimary:{},kerfActual:{},rows:spRows,machines:[
+    {id:2,name:'Southern Pine',note:'',gradingBody:'SPIB',primaryMachineId:null,wane1Rows:spW1,wane2Rows:spW2,wane1Primary:{},wane2Primary:{},priceLengths:[...DEFAULT_PRICE_LENGTHS],pricePrimary:{},priceMachines:{},priceStars:{},kerfPrimary:{},kerfActual:{},rows:spRows,machines:[
       {id:1,name:'Machine 2',data:makeMachineData(spRows),wane1:{},wane2:{}},
       {id:2,name:'Machine 3',data:makeMachineData(spRows),wane1:{},wane2:{}},
       {id:3,name:'Machine 4',data:makeMachineData(spRows),wane1:{},wane2:{}},
@@ -646,6 +649,22 @@ function getMRow(machine,rid){
   return machine.data[rid];
 }
 
+function getPrimData(sp,rid,gkey,sf){
+  if(sp.primaryMachineId!=null){
+    const pm=sp.machines.find(m=>m.id===sp.primaryMachineId);
+    if(pm)return getMRow(pm,rid)[gkey][sf];
+  }
+  return sp.rows.find(r=>r.id===rid)?.data[gkey]?.[sf]??'';
+}
+
+function setPrimary(mi){
+  const sp=getSp();
+  const m=sp.machines[mi];
+  if(!m)return;
+  sp.primaryMachineId=(sp.primaryMachineId===m.id?null:m.id);
+  render();
+}
+
 function isDiff(a,b){
   if(a===''&&b==='')return false;
   if(a===''||b==='')return b!==''&&a!==b;
@@ -660,7 +679,7 @@ function calcAlign(sp){
   sp.rows.forEach(r=>{
     sp.machines.forEach(m=>{
       const md=getMRow(m,r.id);
-      SETTING_GROUPS.forEach(g=>{SUBFIELDS.forEach(sf=>{tot++;if(!isDiff(r.data[g.key][sf],md[g.key][sf]))match++;});});
+      SETTING_GROUPS.forEach(g=>{SUBFIELDS.forEach(sf=>{tot++;if(!isDiff(getPrimData(sp,r.id,g.key,sf),md[g.key][sf]))match++;});});
     });
   });
   return tot===0?100:Math.round(match/tot*100);
@@ -670,7 +689,7 @@ function calcMachineAlign(m,sp){
   let tot=0,match=0;
   sp.rows.forEach(r=>{
     const md=getMRow(m,r.id);
-    SETTING_GROUPS.forEach(g=>{SUBFIELDS.forEach(sf=>{tot++;if(!isDiff(r.data[g.key][sf],md[g.key][sf]))match++;});});
+    SETTING_GROUPS.forEach(g=>{SUBFIELDS.forEach(sf=>{tot++;if(!isDiff(getPrimData(sp,r.id,g.key,sf),md[g.key][sf]))match++;});});
   });
   return tot===0?100:Math.round(match/tot*100);
 }
@@ -680,7 +699,7 @@ function calcSectionAlign(sp,gkey){
   sp.rows.forEach(r=>{
     sp.machines.forEach(m=>{
       const md=getMRow(m,r.id);
-      SUBFIELDS.forEach(sf=>{tot++;if(!isDiff(r.data[gkey][sf],md[gkey][sf]))match++;});
+      SUBFIELDS.forEach(sf=>{tot++;if(!isDiff(getPrimData(sp,r.id,gkey,sf),md[gkey][sf]))match++;});
     });
   });
   return tot===0?100:Math.round(match/tot*100);
@@ -690,7 +709,7 @@ function calcMachineSectionAlign(m,sp,gkey){
   let tot=0,match=0;
   sp.rows.forEach(r=>{
     const md=getMRow(m,r.id);
-    SUBFIELDS.forEach(sf=>{tot++;if(!isDiff(r.data[gkey][sf],md[gkey][sf]))match++;});
+    SUBFIELDS.forEach(sf=>{tot++;if(!isDiff(getPrimData(sp,r.id,gkey,sf),md[gkey][sf]))match++;});
   });
   return tot===0?100:Math.round(match/tot*100);
 }
@@ -700,7 +719,7 @@ function calcSectionDiffs(sp,gkey){
   sp.rows.forEach(r=>{
     sp.machines.forEach(m=>{
       const md=getMRow(m,r.id);
-      SUBFIELDS.forEach(sf=>{if(isDiff(r.data[gkey][sf],md[gkey][sf]))diffs++;});
+      SUBFIELDS.forEach(sf=>{if(isDiff(getPrimData(sp,r.id,gkey,sf),md[gkey][sf]))diffs++;});
     });
   });
   return diffs;
@@ -734,29 +753,35 @@ function renderTable(){
   const sp=getSp();
   const tbl=document.getElementById('mainTable');
   const COL_LABEL=155,COL_VAL=52;
+  const hasPrim=sp.primaryMachineId!=null;
+  const colGroups=hasPrim?sp.machines.length:(1+sp.machines.length);
   let cg=`<colgroup><col style="width:${COL_LABEL}px;min-width:${COL_LABEL}px;">`;
-  for(let i=0;i<(1+sp.machines.length);i++){for(let j=0;j<3;j++)cg+=`<col style="width:${COL_VAL}px">`;}
+  for(let i=0;i<colGroups;i++){for(let j=0;j<3;j++)cg+=`<col style="width:${COL_VAL}px">`;}
   cg+=`</colgroup>`;
   let h=`<thead><tr>
-    <th rowspan="2" style="text-align:left;padding-left:8px;vertical-align:bottom;min-width:${COL_LABEL}px;"><span style="color:#8C8C88;font-size:9px;">Product</span></th>
-    <th colspan="3" class="th-primary">Primary machine</th>`;
+    <th rowspan="2" style="text-align:left;padding-left:8px;vertical-align:bottom;min-width:${COL_LABEL}px;"><span style="color:#8C8C88;font-size:9px;">Product</span></th>`;
+  if(!hasPrim){
+    h+=`<th colspan="3" class="th-primary">Primary machine</th>`;
+  }
   sp.machines.forEach((m,mi)=>{
+    const isPrim=hasPrim&&m.id===sp.primaryMachineId;
     const p=calcMachineAlign(m,sp);const pc=pctClass(p);
-    h+=`<th colspan="3" class="th-machine">
+    h+=`<th colspan="3" class="${isPrim?'th-primary':'th-machine'}">
       <input class="name-inp" value="${m.name}" title="Click to rename" onchange="getSp().machines[${mi}].name=this.value;render()"/>
       <button class="del-btn" onclick="removeMachine(${mi})" title="Remove">×</button>
+      <button class="star-btn${isPrim?' active':''}" onclick="setPrimary(${mi})" title="${isPrim?'Unset primary':'Set as primary'}">★</button>
       <span class="machine-align ${pc}">${p}% aligned</span>
     </th>`;
   });
   h+=`</tr><tr>`;
-  for(let i=0;i<1+sp.machines.length;i++){h+=`<th>Target</th><th>Min</th><th>Max</th>`;}
+  for(let i=0;i<colGroups;i++){h+=`<th>Target</th><th>Min</th><th>Max</th>`;}
   h+=`</tr></thead><tbody>`;
   SETTING_GROUPS.forEach(g=>{
     const diffCount=calcSectionDiffs(sp,g.key);
     const badge=diffCount>0
       ?`<span class="sect-badge" style="background:rgba(252,235,235,0.25);color:#FCEBEB;">${diffCount} diff${diffCount>1?'s':''}</span>`
       :`<span class="sect-badge" style="background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);">✓</span>`;
-    h+=`<tr><td class="th-section-${g.key}" colspan="${1+(1+sp.machines.length)*3}">${g.label} <span style="opacity:0.55;font-weight:400;font-size:10px;">${g.unit}</span>${badge}</td></tr>`;
+    h+=`<tr><td class="th-section-${g.key}" colspan="${1+colGroups*3}">${g.label} <span style="opacity:0.55;font-weight:400;font-size:10px;">${g.unit}</span>${badge}</td></tr>`;
     sp.rows.forEach((row,ri)=>{
       const rt=row.type;const lc=rt==='sb'?'sb-row':rt==='cb'?'cb-row':'';
       const tl=rt==='sb'?'SB':rt==='cb'?'CB':'—';
@@ -764,19 +789,22 @@ function renderTable(){
         <input class="label-inp" value="${row.label}" onchange="getSp().rows[${ri}].label=this.value"/>
         <button class="row-type-toggle" onclick="toggleRowType(${ri})">${tl}</button>
       </div></td>`;
-      SUBFIELDS.forEach(sf=>{
-        h+=`<td class="prim-cell"><input type="text" value="${row.data[g.key][sf]}" placeholder="${sf}" onchange="getSp().rows[${ri}].data['${g.key}']['${sf}']=this.value;render()"/></td>`;
-      });
+      if(!hasPrim){
+        SUBFIELDS.forEach(sf=>{
+          h+=`<td class="prim-cell"><input type="text" value="${row.data[g.key][sf]}" placeholder="${sf}" onchange="getSp().rows[${ri}].data['${g.key}']['${sf}']=this.value;render()"/></td>`;
+        });
+      }
       sp.machines.forEach((m,mi)=>{
+        const isPrim=hasPrim&&m.id===sp.primaryMachineId;
         const md=getMRow(m,row.id);
         SUBFIELDS.forEach(sf=>{
-          const diff=isDiff(row.data[g.key][sf],md[g.key][sf]);
-          h+=`<td class="${diff?'diff-cell':'ok-cell'}"><input type="text" value="${md[g.key][sf]}" placeholder="${sf}" onchange="getSp().machines[${mi}].data[${row.id}]['${g.key}']['${sf}']=this.value;render()"/></td>`;
+          const diff=!isPrim&&isDiff(getPrimData(sp,row.id,g.key,sf),md[g.key][sf]);
+          h+=`<td class="${isPrim?'prim-cell':diff?'diff-cell':'ok-cell'}"><input type="text" value="${md[g.key][sf]}" placeholder="${sf}" onchange="getSp().machines[${mi}].data[${row.id}]['${g.key}']['${sf}']=this.value;render()"/></td>`;
         });
       });
       h+=`</tr>`;
     });
-    h+=`<tr><td colspan="${1+(1+sp.machines.length)*3}" style="padding:3px 8px;background:#fff;">
+    h+=`<tr><td colspan="${1+colGroups*3}" style="padding:3px 8px;background:#fff;">
       <button class="add-row-btn" onclick="addProductRow()">+ add product row</button>
     </td></tr>`;
   });
@@ -787,7 +815,7 @@ function renderTable(){
 function renderSummary(){
   const sp=getSp();
   let tot=0,diff=0;
-  sp.rows.forEach(r=>{sp.machines.forEach(m=>{const md=getMRow(m,r.id);SETTING_GROUPS.forEach(g=>{SUBFIELDS.forEach(sf=>{tot++;if(isDiff(r.data[g.key][sf],md[g.key][sf]))diff++;});});});});
+  sp.rows.forEach(r=>{sp.machines.forEach(m=>{const md=getMRow(m,r.id);SETTING_GROUPS.forEach(g=>{SUBFIELDS.forEach(sf=>{tot++;if(isDiff(getPrimData(sp,r.id,g.key,sf),md[g.key][sf]))diff++;});});});});
   const match=tot-diff;const pct=tot===0?100:Math.round(match/tot*100);const bc=pctBarColor(pct);
   document.getElementById('summary').innerHTML=`
     <div class="sc"><span class="v">${sp.rows.length}</span><span class="l">Product rows</span></div>
@@ -848,16 +876,21 @@ function renderWaneSection(wk,elId){
   </div>`;
   h+=`<div class="tscroll"><table>`;
   h+=cg;
+  const wHasPrim=sp.primaryMachineId!=null;
+  const wColGroups=wHasPrim?sp.machines.length:(1+sp.machines.length);
   h+=`<thead><tr>
-    <th rowspan="2" style="text-align:left;padding-left:8px;vertical-align:bottom;min-width:${COL_LABEL}px;"><span style="color:#8C8C88;font-size:9px;">Grade</span></th>
-    <th colspan="3" class="th-primary">Primary machine</th>`;
+    <th rowspan="2" style="text-align:left;padding-left:8px;vertical-align:bottom;min-width:${COL_LABEL}px;"><span style="color:#8C8C88;font-size:9px;">Grade</span></th>`;
+  if(!wHasPrim){
+    h+=`<th colspan="3" class="th-primary">Primary machine</th>`;
+  }
   sp.machines.forEach((m,mi)=>{
-    h+=`<th colspan="3" class="th-machine">
-      <span style="font-size:11px;font-weight:500;">${m.name}</span>
+    const isWPrim=wHasPrim&&m.id===sp.primaryMachineId;
+    h+=`<th colspan="3" class="${isWPrim?'th-primary':'th-machine'}">
+      <span style="font-size:11px;font-weight:500;">${m.name}${isWPrim?' ★':''}</span>
     </th>`;
   });
   h+=`</tr><tr>`;
-  for(let i=0;i<1+sp.machines.length;i++){h+=`<th>% Length</th><th>% Edge</th><th>% Face</th>`;}
+  for(let i=0;i<wColGroups;i++){h+=`<th>% Length</th><th>% Edge</th><th>% Face</th>`;}
   h+=`</tr></thead><tbody>`;
 
   waneRows.forEach((row,ri)=>{
@@ -867,21 +900,28 @@ function renderWaneSection(wk,elId){
       <button class="del-btn" onclick="removeWaneRow('${wk}',${ri})" title="Remove grade">×</button>
     </div></td>`;
     const wanePH={target:'% Len',min:'% Edge',max:'% Face'};
-    SUBFIELDS.forEach(sf=>{
-      h+=`<td class="prim-cell"><input type="text" value="${pv[sf]||''}" placeholder="${wanePH[sf]}" onchange="setWanePrimary('${wk}',${row.id},'${sf}',this.value)"/></td>`;
-    });
-    sp.machines.forEach((m,mi)=>{
-      const mv=(m[wk]&&m[wk][row.id])||{target:'',min:'',max:''};
+    if(!wHasPrim){
       SUBFIELDS.forEach(sf=>{
-        const diff=isDiff(pv[sf]||'',mv[sf]||'');
-        h+=`<td class="${diff?'diff-cell':'ok-cell'}"><input type="text" value="${mv[sf]||''}" placeholder="${wanePH[sf]}" onchange="setWaneMachine(${mi},'${wk}',${row.id},'${sf}',this.value)"/></td>`;
+        h+=`<td class="prim-cell"><input type="text" value="${pv[sf]||''}" placeholder="${wanePH[sf]}" onchange="setWanePrimary('${wk}',${row.id},'${sf}',this.value)"/></td>`;
+      });
+    }
+    sp.machines.forEach((m,mi)=>{
+      const isWPrimM=wHasPrim&&m.id===sp.primaryMachineId;
+      const mv=(m[wk]&&m[wk][row.id])||{target:'',min:'',max:''};
+      const getPrimWane=(sf)=>{
+        if(wHasPrim){const pm=sp.machines.find(mx=>mx.id===sp.primaryMachineId);return(pm&&pm[wk]&&pm[wk][row.id])?pm[wk][row.id][sf]||'':'';}
+        return pv[sf]||'';
+      };
+      SUBFIELDS.forEach(sf=>{
+        const diff=!isWPrimM&&isDiff(getPrimWane(sf),mv[sf]||'');
+        h+=`<td class="${isWPrimM?'prim-cell':diff?'diff-cell':'ok-cell'}"><input type="text" value="${mv[sf]||''}" placeholder="${wanePH[sf]}" onchange="setWaneMachine(${mi},'${wk}',${row.id},'${sf}',this.value)"/></td>`;
       });
     });
     h+=`</tr>`;
   });
 
   if(waneRows.length===0){
-    h+=`<tr><td colspan="${1+(1+sp.machines.length)*3}" style="padding:8px;text-align:center;color:#8C8C88;font-size:11px;background:#fff;">No grades — click "+ grade" to add one.</td></tr>`;
+    h+=`<tr><td colspan="${1+wColGroups*3}" style="padding:8px;text-align:center;color:#8C8C88;font-size:11px;background:#fff;">No grades — click "+ grade" to add one.</td></tr>`;
   }
   h+=`</tbody></table></div></div>`;
   el.innerHTML=h;
@@ -1291,7 +1331,7 @@ function addSpecies(name,gradingBody){
   const w2=makeWaneRows(gradingBody);
   const existMachines=getSp()?getSp().machines.map(m=>({id:m.id,name:m.name,data:makeMachineData(rows),wane1:{},wane2:{}})):[];
   const machines=existMachines.length?existMachines:[{id:1,name:'Machine 2',data:makeMachineData(rows),wane1:{},wane2:{}}];
-  species.push({id,name,note:'',gradingBody,wane1Rows:w1,wane2Rows:w2,wane1Primary:{},wane2Primary:{},priceLengths:[...DEFAULT_PRICE_LENGTHS],pricePrimary:{},priceMachines:{},priceStars:{},rows,machines});
+  species.push({id,name,note:'',gradingBody,primaryMachineId:null,wane1Rows:w1,wane2Rows:w2,wane1Primary:{},wane2Primary:{},priceLengths:[...DEFAULT_PRICE_LENGTHS],pricePrimary:{},priceMachines:{},priceStars:{},rows,machines});
   activeSp=id;render();
 }
 
@@ -1338,7 +1378,7 @@ function exportCSV(){
   rows.push(['MACHINE SETTINGS']);
   rows.push(['Species','Product','Type',...SETTING_GROUPS.flatMap(g=>[`Primary ${g.label} Target`,`Primary ${g.label} Min`,`Primary ${g.label} Max`]),...sp.machines.flatMap(m=>SETTING_GROUPS.flatMap(g=>[`${m.name} ${g.label} Target`,`${m.name} ${g.label} Min`,`${m.name} ${g.label} Max`]))]);
   sp.rows.forEach(r=>{
-    rows.push([sp.name,r.label,r.type,...SETTING_GROUPS.flatMap(g=>[r.data[g.key].target,r.data[g.key].min,r.data[g.key].max]),...sp.machines.flatMap(m=>{const md=getMRow(m,r.id);return SETTING_GROUPS.flatMap(g=>[md[g.key].target,md[g.key].min,md[g.key].max]);})]);
+    rows.push([sp.name,r.label,r.type,...SETTING_GROUPS.flatMap(g=>[getPrimData(sp,r.id,g.key,'target'),getPrimData(sp,r.id,g.key,'min'),getPrimData(sp,r.id,g.key,'max')]),...sp.machines.flatMap(m=>{const md=getMRow(m,r.id);return SETTING_GROUPS.flatMap(g=>[md[g.key].target,md[g.key].min,md[g.key].max]);})]);
   });
 
   // ── SECTION 2: Wane ──
