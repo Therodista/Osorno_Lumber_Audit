@@ -250,6 +250,7 @@ td.row-label.cb-row{color:#185FA5;}
 .wane-add-grade-btn{font-size:10px;padding:2px 7px;cursor:pointer;border:0.5px dashed rgba(255,255,255,0.4);background:transparent;color:rgba(255,255,255,0.7);border-radius:3px;}
 .wane-add-grade-btn:hover{background:rgba(255,255,255,0.1);color:#fff;}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
 </head>
 <body>
 
@@ -1209,6 +1210,7 @@ function renderHistory(){
       <div class="audit-card-meta">${chips}</div>
       <div class="audit-card-actions">
         <button class="btn" onclick="exportSnapshotCSV(${a.id})">Export CSV</button>
+        <button class="btn" onclick="exportSnapshotXLSX(${a.id})">Export XLSX</button>
         <button class="btn" style="border-color:#A32D2D;color:#A32D2D;" onclick="deleteSnapshot(${a.id})">Delete</button>
       </div>
     </div>`;
@@ -1464,6 +1466,168 @@ function exportSnapshotCSV(id){
   });
 
   downloadCSV(allRows,`snapshot-${snap.label.replace(/\s+/g,'-')}`);
+}
+
+async function exportSnapshotXLSX(id){
+  if(typeof ExcelJS==='undefined'){toast('Excel export unavailable — check connection');return;}
+  const snap=auditHistory.find(a=>a.id===id);
+  if(!snap)return;
+
+  const wb=new ExcelJS.Workbook();
+  wb.creator='Osorno Lumber Audit';wb.created=new Date();
+
+  const fill=c=>({type:'pattern',pattern:'solid',fgColor:{argb:c}});
+  const bdr=()=>{const s={style:'thin',color:{argb:'FFCCCCCC'}};return{top:s,left:s,bottom:s,right:s};};
+  const alignFill=pct=>{const v=parseInt(pct);return v>=90?'FFD4EDDA':v>=75?'FFFFF3CD':'FFF8D7DA';};
+
+  snap.species.forEach(spSnap=>{
+    const rd=spSnap.rawData;
+    const ws=wb.addWorksheet(spSnap.name.substring(0,31));
+
+    if(!rd){
+      ws.addRow(['No raw data — this snapshot was saved before full export support was added.']);
+      spSnap.machineAlignments.forEach(m=>{ws.addRow([m.name,m.alignment+'%']);});
+      return;
+    }
+
+    const ms=rd.machines;
+
+    const secHdr=(text,ncols)=>{
+      const r=ws.addRow([text]);r.height=18;
+      for(let i=1;i<=ncols;i++){
+        const c=r.getCell(i);
+        c.fill=fill('FF2D4A2E');c.border=bdr();
+        if(i===1){c.font={bold:true,size:11,color:{argb:'FFFFFFFF'}};c.alignment={vertical:'middle'};}
+        else{c.font={color:{argb:'FF2D4A2E'}};}
+      }
+    };
+    const colHdr=arr=>{
+      const r=ws.addRow(arr);
+      r.eachCell({includeEmpty:true},c=>{
+        c.fill=fill('FF4A6E4C');c.font={bold:true,color:{argb:'FFFFFFFF'},size:10};
+        c.border=bdr();c.alignment={vertical:'middle'};
+      });
+    };
+    const sep=()=>{const r=ws.addRow([]);r.height=6;};
+
+    // ── MACHINE SETTINGS ──
+    const ncols1=2+SETTING_GROUPS.length*3*(1+ms.length);
+    secHdr(`${spSnap.name.toUpperCase()} — MACHINE SETTINGS`,ncols1);
+    colHdr(['Product','Type',
+      ...SETTING_GROUPS.flatMap(g=>[`Primary ${g.label} Target`,`Primary ${g.label} Min`,`Primary ${g.label} Max`]),
+      ...ms.flatMap(m=>SETTING_GROUPS.flatMap(g=>[`${m.name} ${g.label} Target`,`${m.name} ${g.label} Min`,`${m.name} ${g.label} Max`]))
+    ]);
+    rd.rows.forEach(r=>{
+      const vals=[r.label,r.type,
+        ...SETTING_GROUPS.flatMap(g=>[r.data[g.key].target,r.data[g.key].min,r.data[g.key].max]),
+        ...ms.flatMap(m=>{const md=(m.data&&m.data[r.id])||{};return SETTING_GROUPS.flatMap(g=>[md[g.key]?md[g.key].target:'',md[g.key]?md[g.key].min:'',md[g.key]?md[g.key].max:'']);})
+      ];
+      const row=ws.addRow(vals);
+      [1,2].forEach(i=>{row.getCell(i).border=bdr();});
+      let ci=3;
+      SETTING_GROUPS.forEach(()=>{for(let i=0;i<3;i++){const c=row.getCell(ci++);c.fill=fill('FFFFF8E7');c.border=bdr();}});
+      ms.forEach(m=>{
+        const md=(m.data&&m.data[r.id])||{};
+        SETTING_GROUPS.forEach(g=>{
+          ['target','min','max'].forEach(sf=>{
+            const c=row.getCell(ci++);
+            c.fill=fill(isDiff(r.data[g.key][sf],md[g.key]?md[g.key][sf]:'')?'FFFFE8E8':'FFF0F7F0');
+            c.border=bdr();
+          });
+        });
+      });
+    });
+
+    // ── WANE SECTIONS ──
+    ['wane1','wane2'].forEach(wk=>{
+      sep();
+      const wRows=rd[wk+'Rows']||[],primary=rd[wk+'Primary']||{};
+      const title=(rd[wk+'Title']||`${spSnap.name} — ${wk==='wane1'?'Primary':'Secondary'} Wane`).toUpperCase();
+      secHdr(title,4+ms.length*3);
+      colHdr(['Grade','Primary % Length','Primary % Edge','Primary % Face',
+        ...ms.flatMap(m=>[`${m.name} % Length`,`${m.name} % Edge`,`${m.name} % Face`])
+      ]);
+      wRows.forEach(gr=>{
+        const pv=primary[gr.id]||{target:'',min:'',max:''};
+        const row=ws.addRow([gr.label,pv.target,pv.min,pv.max,
+          ...ms.flatMap(m=>{const mv=(m[wk]&&m[wk][gr.id])||{target:'',min:'',max:''};return[mv.target,mv.min,mv.max];})
+        ]);
+        row.getCell(1).border=bdr();
+        [2,3,4].forEach(i=>{const c=row.getCell(i);c.fill=fill('FFFFF8E7');c.border=bdr();});
+        let ci=5;
+        ms.forEach(m=>{
+          const mv=(m[wk]&&m[wk][gr.id])||{};
+          ['target','min','max'].forEach(sf=>{
+            const c=row.getCell(ci++);
+            c.fill=fill(isDiff(pv[sf],mv[sf]||'')?'FFFFE8E8':'FFF0F7F0');
+            c.border=bdr();
+          });
+        });
+      });
+    });
+
+    // ── PRICING ──
+    sep();
+    const lengths=rd.priceLengths||DEFAULT_PRICE_LENGTHS;
+    secHdr(`${spSnap.name.toUpperCase()} — PRICING ($/MBF)`,2+lengths.length*(1+ms.length));
+    colHdr(['Product','Type',...lengths.map(l=>`Primary ${l}'`),...ms.flatMap(m=>lengths.map(l=>`${m.name} ${l}'`))]);
+    rd.rows.forEach(r=>{
+      const row=ws.addRow([r.label,r.type,
+        ...lengths.map((l,i)=>rd.pricePrimary&&rd.pricePrimary[r.id]?rd.pricePrimary[r.id][i]||'':''),
+        ...ms.flatMap(m=>lengths.map((l,i)=>rd.priceMachines&&rd.priceMachines[m.id]&&rd.priceMachines[m.id][r.id]?rd.priceMachines[m.id][r.id][i]||'':''))
+      ]);
+      [1,2].forEach(i=>{row.getCell(i).border=bdr();});
+      let ci=3;
+      lengths.forEach(()=>{const c=row.getCell(ci++);c.fill=fill('FFFFF8E7');c.border=bdr();});
+      ms.forEach(m=>{
+        lengths.forEach((l,i)=>{
+          const c=row.getCell(ci++);
+          const pv=rd.pricePrimary&&rd.pricePrimary[r.id]?rd.pricePrimary[r.id][i]||'':'';
+          const mv=rd.priceMachines&&rd.priceMachines[m.id]&&rd.priceMachines[m.id][r.id]?rd.priceMachines[m.id][r.id][i]||'':'';
+          c.fill=fill(isDiff(pv,mv)?'FFFFE8E8':'FFF0F7F0');c.border=bdr();
+        });
+      });
+    });
+
+    // ── KERF ──
+    sep();
+    secHdr(`${spSnap.name.toUpperCase()} — KERF (inches)`,4);
+    colHdr(['Machine','Predicted','Actual','Match']);
+    const kp=rd.kerfPrimary||{},ka=rd.kerfActual||{};
+    ms.forEach(m=>{
+      const pred=kp[m.id]||'',act=ka[m.id]||'';
+      const match=pred===''||act===''?'—':isDiff(pred,act)?'No':'Yes';
+      const row=ws.addRow([m.name,pred,act,match]);
+      row.eachCell({includeEmpty:true},c=>c.border=bdr());
+      const mc=row.getCell(4);
+      if(match==='Yes')mc.fill=fill('FFF0F7F0');
+      else if(match==='No')mc.fill=fill('FFFFE8E8');
+    });
+
+    // ── ALIGNMENT SUMMARY ──
+    sep();
+    secHdr(`${spSnap.name.toUpperCase()} — ALIGNMENT SUMMARY`,2+SETTING_GROUPS.length);
+    colHdr(['Machine','Overall %',...SETTING_GROUPS.map(g=>g.label+' %')]);
+    spSnap.machineAlignments.forEach(m=>{
+      const sectVals=m.sectionAlignments?m.sectionAlignments.map(s=>s.alignment+'%'):[];
+      const row=ws.addRow([m.name,m.alignment+'%',...sectVals]);
+      row.getCell(1).border=bdr();
+      row.getCell(2).fill=fill(alignFill(m.alignment));row.getCell(2).border=bdr();
+      sectVals.forEach((v,i)=>{const c=row.getCell(i+3);c.fill=fill(alignFill(v));c.border=bdr();});
+    });
+
+    // Column widths
+    ws.getColumn(1).width=22;ws.getColumn(2).width=14;
+    for(let i=3;i<=ncols1;i++)ws.getColumn(i).width=13;
+  });
+
+  const buffer=await wb.xlsx.writeBuffer();
+  const blob=new Blob([buffer],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=`snapshot-${snap.label.replace(/\s+/g,'-')}.xlsx`;
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
 
 function downloadCSV(rows,name){
