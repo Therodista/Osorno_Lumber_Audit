@@ -612,5 +612,99 @@
         ]
       }
     ]
+  },
+  {
+    "id": 1781871641131,
+    "label": "Claude Check",
+    "notes": "",
+    "date": "2026-06-19T12:20:41.131Z",
+    "species": [
+      {
+        "name": "Ponderosa Pine",
+        "alignment": 92,
+        "machineAlignments": [
+          {
+            "name": "Machine 2",
+            "alignment": 100
+          },
+          {
+            "name": "Machine 3",
+            "alignment": 78
+          },
+          {
+            "name": "Machine 4",
+            "alignment": 89
+          },
+          {
+            "name": "Machine 5",
+            "alignment": 100
+          },
+          {
+            "name": "Machine 6",
+            "alignment": 94
+          }
+        ],
+        "sectionAlignments": [
+          {
+            "key": "thickness",
+            "label": "Thickness",
+            "alignment": 96
+          },
+          {
+            "key": "width",
+            "label": "Width",
+            "alignment": 83
+          },
+          {
+            "key": "length",
+            "label": "Length",
+            "alignment": 98
+          }
+        ]
+      },
+      {
+        "name": "Southern Pine",
+        "alignment": 97,
+        "machineAlignments": [
+          {
+            "name": "Machine 2",
+            "alignment": 100
+          },
+          {
+            "name": "Machine 3",
+            "alignment": 96
+          },
+          {
+            "name": "Machine 4",
+            "alignment": 93
+          },
+          {
+            "name": "Machine 5",
+            "alignment": 100
+          },
+          {
+            "name": "Machine 6",
+            "alignment": 96
+          }
+        ],
+        "sectionAlignments": [
+          {
+            "key": "thickness",
+            "label": "Thickness",
+            "alignment": 98
+          },
+          {
+            "key": "width",
+            "label": "Width",
+            "alignment": 98
+          },
+          {
+            "key": "length",
+            "label": "Length",
+            "alignment": 96
+          }
+        ]
+      }
+    ]
   }
 ]
