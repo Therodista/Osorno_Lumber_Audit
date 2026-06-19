@@ -525,10 +525,12 @@ async function saveSnapshot(){
     if(r.ok){
       const rd=await r.json();
       historyFileSha=rd.content.sha;
-      toast('Audit saved ✓');
+      toast('Audit saved ✓ — data cleared for next run');
+      clearAuditData();
+      render();
       renderHistory();
       renderTrends();
-      setStatus('Saved — '+auditHistory.length+' audit'+(auditHistory.length!==1?'s':''),'');
+      setStatus('Saved — '+auditHistory.length+' audit'+(auditHistory.length!==1?'s':'')+' — ready for next run','');
       setSyncStatus('');
     }else{
       auditHistory.pop();
@@ -1132,6 +1134,23 @@ function setKerfPrimary(rowKey,val){
 function setKerfActual(machineId,val){
   const sp=getSp();if(!sp.kerfActual)sp.kerfActual={};
   sp.kerfActual[machineId]=val;renderKerfSection();
+}
+
+function clearAuditData(){
+  species.forEach(sp=>{
+    sp.rows.forEach(r=>{
+      SETTING_GROUPS.forEach(g=>{r.data[g.key]={target:'',min:'',max:''};});
+    });
+    sp.machines.forEach(m=>{
+      sp.rows.forEach(r=>{
+        if(m.data[r.id])SETTING_GROUPS.forEach(g=>{m.data[r.id][g.key]={target:'',min:'',max:''};});
+      });
+      m.wane1={};m.wane2={};
+    });
+    sp.wane1Primary={};sp.wane2Primary={};
+    sp.pricePrimary={};sp.priceMachines={};
+    sp.kerfPrimary={};sp.kerfActual={};
+  });
 }
 
 function render(){renderTabs();renderSpInfo();renderTable();renderWaneSection('wane1','wane1Section');renderWaneSection('wane2','wane2Section');renderPricingSection();renderKerfSection();renderSummary();renderCrossTable();}
