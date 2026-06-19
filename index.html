@@ -514,6 +514,21 @@ async function saveSnapshot(){
       alignment:calcAlign(sp),
       machineAlignments:sp.machines.map(m=>({name:m.name,alignment:calcMachineAlign(m,sp),sectionAlignments:SETTING_GROUPS.map(g=>({key:g.key,label:g.label,alignment:calcMachineSectionAlign(m,sp,g.key)}))})),
       sectionAlignments:SETTING_GROUPS.map(g=>({key:g.key,label:g.label,alignment:calcSectionAlign(sp,g.key)})),
+      rawData:{
+        rows:JSON.parse(JSON.stringify(sp.rows)),
+        machines:JSON.parse(JSON.stringify(sp.machines)),
+        wane1Rows:JSON.parse(JSON.stringify(sp.wane1Rows||[])),
+        wane2Rows:JSON.parse(JSON.stringify(sp.wane2Rows||[])),
+        wane1Primary:JSON.parse(JSON.stringify(sp.wane1Primary||{})),
+        wane2Primary:JSON.parse(JSON.stringify(sp.wane2Primary||{})),
+        wane1Title:sp.wane1Title||'',
+        wane2Title:sp.wane2Title||'',
+        priceLengths:sp.priceLengths||[...DEFAULT_PRICE_LENGTHS],
+        pricePrimary:JSON.parse(JSON.stringify(sp.pricePrimary||{})),
+        priceMachines:JSON.parse(JSON.stringify(sp.priceMachines||{})),
+        kerfPrimary:JSON.parse(JSON.stringify(sp.kerfPrimary||{})),
+        kerfActual:JSON.parse(JSON.stringify(sp.kerfActual||{})),
+      }
     }))
   };
 
@@ -1373,15 +1388,82 @@ function exportCSV(){
 function exportSnapshotCSV(id){
   const snap=auditHistory.find(a=>a.id===id);
   if(!snap)return;
-  const sectionLabels=snap.species.length&&snap.species[0].sectionAlignments?snap.species[0].sectionAlignments.map(s=>s.label):SETTING_GROUPS.map(g=>g.label);
-  const rows=[['Species','Machine','Overall Alignment %',...sectionLabels.map(l=>l+' Alignment %')]];
-  snap.species.forEach(sp=>{
-    sp.machineAlignments.forEach(m=>{
-      const sectVals=m.sectionAlignments?m.sectionAlignments.map(s=>s.alignment+'%'):sp.sectionAlignments?sp.sectionAlignments.map(s=>s.alignment+'%'):[];
-      rows.push([sp.name,m.name,m.alignment+'%',...sectVals]);
+  const hasRaw=snap.species.length&&snap.species[0].rawData;
+
+  if(!hasRaw){
+    // Legacy snapshots — alignment summary only
+    const sectionLabels=snap.species.length&&snap.species[0].sectionAlignments?snap.species[0].sectionAlignments.map(s=>s.label):SETTING_GROUPS.map(g=>g.label);
+    const rows=[['Species','Machine','Overall Alignment %',...sectionLabels.map(l=>l+' Alignment %')]];
+    snap.species.forEach(sp=>{
+      sp.machineAlignments.forEach(m=>{
+        const sectVals=m.sectionAlignments?m.sectionAlignments.map(s=>s.alignment+'%'):sp.sectionAlignments?sp.sectionAlignments.map(s=>s.alignment+'%'):[];
+        rows.push([sp.name,m.name,m.alignment+'%',...sectVals]);
+      });
+    });
+    downloadCSV(rows,`snapshot-${snap.label.replace(/\s+/g,'-')}`);
+    return;
+  }
+
+  // Full export from stored raw data
+  const allRows=[];
+  const sep=()=>allRows.push([]);
+  snap.species.forEach((spSnap,si)=>{
+    if(si>0){sep();sep();}
+    const rd=spSnap.rawData;
+    const machines=rd.machines;
+
+    // Machine Settings
+    allRows.push([`${spSnap.name.toUpperCase()} — MACHINE SETTINGS`]);
+    allRows.push(['Product','Type',...SETTING_GROUPS.flatMap(g=>[`Primary ${g.label} Target`,`Primary ${g.label} Min`,`Primary ${g.label} Max`]),...machines.flatMap(m=>SETTING_GROUPS.flatMap(g=>[`${m.name} ${g.label} Target`,`${m.name} ${g.label} Min`,`${m.name} ${g.label} Max`]))]);
+    rd.rows.forEach(r=>{
+      allRows.push([r.label,r.type,...SETTING_GROUPS.flatMap(g=>[r.data[g.key].target,r.data[g.key].min,r.data[g.key].max]),...machines.flatMap(m=>{const md=(m.data&&m.data[r.id])||{};return SETTING_GROUPS.flatMap(g=>[md[g.key]?md[g.key].target:'',md[g.key]?md[g.key].min:'',md[g.key]?md[g.key].max:'']);})]);
+    });
+
+    // Wane sections
+    ['wane1','wane2'].forEach(wk=>{
+      sep();
+      const wRows=rd[wk+'Rows']||[];
+      const primary=rd[wk+'Primary']||{};
+      const title=(rd[wk+'Title']||`${spSnap.name} — ${wk==='wane1'?'Primary':'Secondary'} Wane`).toUpperCase();
+      allRows.push([title]);
+      allRows.push(['Grade','Primary % Length','Primary % Edge','Primary % Face',...machines.flatMap(m=>[`${m.name} % Length`,`${m.name} % Edge`,`${m.name} % Face`])]);
+      wRows.forEach(gr=>{
+        const pv=primary[gr.id]||{target:'',min:'',max:''};
+        allRows.push([gr.label,pv.target,pv.min,pv.max,...machines.flatMap(m=>{const mv=(m[wk]&&m[wk][gr.id])||{target:'',min:'',max:''};return[mv.target,mv.min,mv.max];})]);
+      });
+    });
+
+    // Pricing
+    sep();
+    const lengths=rd.priceLengths||DEFAULT_PRICE_LENGTHS;
+    allRows.push([`${spSnap.name.toUpperCase()} — PRICING ($/MBF)`]);
+    allRows.push(['Product','Type',...lengths.map(l=>`Primary ${l}'`),...machines.flatMap(m=>lengths.map(l=>`${m.name} ${l}'`))]);
+    rd.rows.forEach(r=>{
+      allRows.push([r.label,r.type,...lengths.map((l,i)=>rd.pricePrimary&&rd.pricePrimary[r.id]?rd.pricePrimary[r.id][i]||'':''),...machines.flatMap(m=>lengths.map((l,i)=>rd.priceMachines&&rd.priceMachines[m.id]&&rd.priceMachines[m.id][r.id]?rd.priceMachines[m.id][r.id][i]||'':''))]);
+    });
+
+    // Kerf
+    sep();
+    allRows.push([`${spSnap.name.toUpperCase()} — KERF (inches)`]);
+    allRows.push(['Machine','Predicted','Actual','Match']);
+    const kp=rd.kerfPrimary||{},ka=rd.kerfActual||{};
+    machines.forEach(m=>{
+      const pred=kp[m.id]||'';const act=ka[m.id]||'';
+      const match=pred===''||act===''?'—':isDiff(pred,act)?'No':'Yes';
+      allRows.push([m.name,pred,act,match]);
+    });
+
+    // Alignment Summary
+    sep();
+    allRows.push([`${spSnap.name.toUpperCase()} — ALIGNMENT SUMMARY`]);
+    allRows.push(['Machine','Overall %',...SETTING_GROUPS.map(g=>g.label+' %')]);
+    spSnap.machineAlignments.forEach(m=>{
+      const sectVals=m.sectionAlignments?m.sectionAlignments.map(s=>s.alignment+'%'):[];
+      allRows.push([m.name,m.alignment+'%',...sectVals]);
     });
   });
-  downloadCSV(rows,`snapshot-${snap.label.replace(/\s+/g,'-')}`);
+
+  downloadCSV(allRows,`snapshot-${snap.label.replace(/\s+/g,'-')}`);
 }
 
 function downloadCSV(rows,name){
