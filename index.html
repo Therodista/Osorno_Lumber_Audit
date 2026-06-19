@@ -1513,6 +1513,14 @@ async function exportSnapshotXLSX(id){
   const snap=auditHistory.find(a=>a.id===id);
   if(!snap)return;
 
+  // Only export species that have actual data in at least one machine column
+  const hasData=sp=>sp.rawData&&sp.rawData.machines&&sp.rawData.machines.some(m=>
+    Object.values(m.data||{}).some(d=>d.thickness&&d.thickness.target!=='')
+  );
+  const speciesWithData=snap.species.filter(hasData);
+  // Fall back to all if none pass the filter (shouldn't happen)
+  const exportSpecies=speciesWithData.length?speciesWithData:snap.species;
+
   const wb=new ExcelJS.Workbook();
   wb.creator='Osorno Lumber Audit';wb.created=new Date();
 
@@ -1520,7 +1528,7 @@ async function exportSnapshotXLSX(id){
   const bdr=()=>{const s={style:'thin',color:{argb:'FFCCCCCC'}};return{top:s,left:s,bottom:s,right:s};};
   const alignFill=pct=>{const v=parseInt(pct);return v>=90?'FFD4EDDA':v>=75?'FFFFF3CD':'FFF8D7DA';};
 
-  snap.species.forEach(spSnap=>{
+  exportSpecies.forEach(spSnap=>{
     const rd=spSnap.rawData;
     const ws=wb.addWorksheet(spSnap.name.substring(0,31));
 
@@ -1660,6 +1668,9 @@ async function exportSnapshotXLSX(id){
     ws.getColumn(1).width=22;ws.getColumn(2).width=14;
     for(let i=3;i<=ncols1;i++)ws.getColumn(i).width=13;
   });
+
+  // Set first sheet as active
+  wb.views=[{activeTab:0}];
 
   const buffer=await wb.xlsx.writeBuffer();
   const blob=new Blob([buffer],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
