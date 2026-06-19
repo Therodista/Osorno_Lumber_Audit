@@ -512,7 +512,7 @@ async function saveSnapshot(){
     species:species.map(sp=>({
       name:sp.name,
       alignment:calcAlign(sp),
-      machineAlignments:sp.machines.map(m=>({name:m.name,alignment:calcMachineAlign(m,sp)})),
+      machineAlignments:sp.machines.map(m=>({name:m.name,alignment:calcMachineAlign(m,sp),sectionAlignments:SETTING_GROUPS.map(g=>({key:g.key,label:g.label,alignment:calcMachineSectionAlign(m,sp,g.key)}))})),
       sectionAlignments:SETTING_GROUPS.map(g=>({key:g.key,label:g.label,alignment:calcSectionAlign(sp,g.key)})),
     }))
   };
@@ -666,6 +666,15 @@ function calcSectionAlign(sp,gkey){
       const md=getMRow(m,r.id);
       SUBFIELDS.forEach(sf=>{tot++;if(!isDiff(r.data[gkey][sf],md[gkey][sf]))match++;});
     });
+  });
+  return tot===0?100:Math.round(match/tot*100);
+}
+
+function calcMachineSectionAlign(m,sp,gkey){
+  let tot=0,match=0;
+  sp.rows.forEach(r=>{
+    const md=getMRow(m,r.id);
+    SUBFIELDS.forEach(sf=>{tot++;if(!isDiff(r.data[gkey][sf],md[gkey][sf]))match++;});
   });
   return tot===0?100:Math.round(match/tot*100);
 }
@@ -1305,21 +1314,71 @@ function toggleRowType(ri){
 
 function exportCSV(){
   const sp=getSp();
-  let rows=[['Species','Product','Type',...SETTING_GROUPS.flatMap(g=>[`${g.label} Target`,`${g.label} Min`,`${g.label} Max`]),...sp.machines.flatMap(m=>SETTING_GROUPS.flatMap(g=>[`${m.name} ${g.label} Target`,`${m.name} ${g.label} Min`,`${m.name} ${g.label} Max`]))]];
+  const rows=[];
+  const sep=()=>rows.push([]);
+
+  // ── SECTION 1: Machine Settings ──
+  rows.push(['MACHINE SETTINGS']);
+  rows.push(['Species','Product','Type',...SETTING_GROUPS.flatMap(g=>[`Primary ${g.label} Target`,`Primary ${g.label} Min`,`Primary ${g.label} Max`]),...sp.machines.flatMap(m=>SETTING_GROUPS.flatMap(g=>[`${m.name} ${g.label} Target`,`${m.name} ${g.label} Min`,`${m.name} ${g.label} Max`]))]);
   sp.rows.forEach(r=>{
-    const row=[sp.name,r.label,r.type,...SETTING_GROUPS.flatMap(g=>[r.data[g.key].target,r.data[g.key].min,r.data[g.key].max]),...sp.machines.flatMap(m=>{const md=getMRow(m,r.id);return SETTING_GROUPS.flatMap(g=>[md[g.key].target,md[g.key].min,md[g.key].max]);})];
-    rows.push(row);
+    rows.push([sp.name,r.label,r.type,...SETTING_GROUPS.flatMap(g=>[r.data[g.key].target,r.data[g.key].min,r.data[g.key].max]),...sp.machines.flatMap(m=>{const md=getMRow(m,r.id);return SETTING_GROUPS.flatMap(g=>[md[g.key].target,md[g.key].min,md[g.key].max]);})]);
   });
+
+  // ── SECTION 2: Wane ──
+  ['wane1','wane2'].forEach(wk=>{
+    sep();
+    const wRows=sp[wk+'Rows']||[];
+    const primary=sp[wk+'Primary']||{};
+    const title=sp[wk+'Title']||`${sp.name} — ${wk==='wane1'?'Primary':'Secondary'} Wane`;
+    rows.push([title.toUpperCase()]);
+    rows.push(['Grade','Primary % Length','Primary % Edge','Primary % Face',...sp.machines.flatMap(m=>[`${m.name} % Length`,`${m.name} % Edge`,`${m.name} % Face`])]);
+    wRows.forEach(gr=>{
+      const pv=primary[gr.id]||{target:'',min:'',max:''};
+      rows.push([gr.label,pv.target,pv.min,pv.max,...sp.machines.flatMap(m=>{const mv=(m[wk]&&m[wk][gr.id])||{target:'',min:'',max:''};return[mv.target,mv.min,mv.max];})]);
+    });
+  });
+
+  // ── SECTION 3: Pricing ──
+  sep();
+  const lengths=sp.priceLengths||DEFAULT_PRICE_LENGTHS;
+  rows.push(['PRICING ($/MBF)']);
+  rows.push(['Product','Type',...lengths.flatMap(l=>[`Primary ${l}'`]),...sp.machines.flatMap(m=>lengths.map(l=>`${m.name} ${l}'`))]);
+  sp.rows.forEach(r=>{
+    const pRow=[r.label,r.type,...lengths.map((l,i)=>(sp.pricePrimary&&sp.pricePrimary[r.id])?sp.pricePrimary[r.id][i]||'':''),...sp.machines.flatMap(m=>lengths.map((l,i)=>(sp.priceMachines&&sp.priceMachines[m.id]&&sp.priceMachines[m.id][r.id])?sp.priceMachines[m.id][r.id][i]||'':''))];
+    rows.push(pRow);
+  });
+
+  // ── SECTION 4: Kerf ──
+  sep();
+  rows.push(['KERF (inches)']);
+  rows.push(['Machine','Predicted','Actual','Match']);
+  const kp=sp.kerfPrimary||{},ka=sp.kerfActual||{};
+  sp.machines.forEach(m=>{
+    const pred=kp[m.id]||'';const act=ka[m.id]||'';
+    const match=pred===''||act===''?'—':isDiff(pred,act)?'No':'Yes';
+    rows.push([m.name,pred,act,match]);
+  });
+
+  // ── SECTION 5: Alignment Summary ──
+  sep();
+  rows.push(['ALIGNMENT SUMMARY']);
+  rows.push(['Species','Machine','Overall %',...SETTING_GROUPS.map(g=>g.label+' %')]);
+  sp.machines.forEach(m=>{
+    rows.push([sp.name,m.name,calcMachineAlign(m,sp)+'%',...SETTING_GROUPS.map(g=>calcMachineSectionAlign(m,sp,g.key)+'%')]);
+  });
+
   downloadCSV(rows,`audit-${sp.name.replace(/\s+/g,'-')}`);
 }
 
 function exportSnapshotCSV(id){
   const snap=auditHistory.find(a=>a.id===id);
   if(!snap)return;
-  const rows=[['Species','Machine','Alignment %',...SETTING_GROUPS.map(g=>g.label+' alignment')]];
+  const sectionLabels=snap.species.length&&snap.species[0].sectionAlignments?snap.species[0].sectionAlignments.map(s=>s.label):SETTING_GROUPS.map(g=>g.label);
+  const rows=[['Species','Machine','Overall Alignment %',...sectionLabels.map(l=>l+' Alignment %')]];
   snap.species.forEach(sp=>{
     sp.machineAlignments.forEach(m=>{
-      rows.push([sp.name,m.name,m.alignment+'%']);
+      const sectVals=m.sectionAlignments?m.sectionAlignments.map(s=>s.alignment+'%'):sp.sectionAlignments?sp.sectionAlignments.map(s=>s.alignment+'%'):[];
+      rows.push([sp.name,m.name,m.alignment+'%',...sectVals]);
     });
   });
   downloadCSV(rows,`snapshot-${snap.label.replace(/\s+/g,'-')}`);
