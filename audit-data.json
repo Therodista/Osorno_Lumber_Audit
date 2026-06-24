@@ -9936,5 +9936,2645 @@
         }
       }
     ]
+  },
+  {
+    "id": 1782305089549,
+    "label": "Troy Test file",
+    "notes": "",
+    "date": "2026-06-24T12:44:49.549Z",
+    "species": [
+      {
+        "name": "Ponderosa Pine",
+        "alignment": 100,
+        "machineAlignments": [
+          {
+            "name": "Machine 2",
+            "alignment": 100,
+            "sectionAlignments": [
+              {
+                "key": "thickness",
+                "label": "Thickness",
+                "alignment": 100
+              },
+              {
+                "key": "width",
+                "label": "Width",
+                "alignment": 100
+              },
+              {
+                "key": "length",
+                "label": "Length",
+                "alignment": 100
+              }
+            ]
+          },
+          {
+            "name": "Machine 3",
+            "alignment": 100,
+            "sectionAlignments": [
+              {
+                "key": "thickness",
+                "label": "Thickness",
+                "alignment": 100
+              },
+              {
+                "key": "width",
+                "label": "Width",
+                "alignment": 100
+              },
+              {
+                "key": "length",
+                "label": "Length",
+                "alignment": 100
+              }
+            ]
+          },
+          {
+            "name": "Machine 4",
+            "alignment": 100,
+            "sectionAlignments": [
+              {
+                "key": "thickness",
+                "label": "Thickness",
+                "alignment": 100
+              },
+              {
+                "key": "width",
+                "label": "Width",
+                "alignment": 100
+              },
+              {
+                "key": "length",
+                "label": "Length",
+                "alignment": 100
+              }
+            ]
+          },
+          {
+            "name": "Machine 5",
+            "alignment": 100,
+            "sectionAlignments": [
+              {
+                "key": "thickness",
+                "label": "Thickness",
+                "alignment": 100
+              },
+              {
+                "key": "width",
+                "label": "Width",
+                "alignment": 100
+              },
+              {
+                "key": "length",
+                "label": "Length",
+                "alignment": 100
+              }
+            ]
+          },
+          {
+            "name": "Machine 6",
+            "alignment": 100,
+            "sectionAlignments": [
+              {
+                "key": "thickness",
+                "label": "Thickness",
+                "alignment": 100
+              },
+              {
+                "key": "width",
+                "label": "Width",
+                "alignment": 100
+              },
+              {
+                "key": "length",
+                "label": "Length",
+                "alignment": 100
+              }
+            ]
+          }
+        ],
+        "sectionAlignments": [
+          {
+            "key": "thickness",
+            "label": "Thickness",
+            "alignment": 100
+          },
+          {
+            "key": "width",
+            "label": "Width",
+            "alignment": 100
+          },
+          {
+            "key": "length",
+            "label": "Length",
+            "alignment": 100
+          }
+        ],
+        "rawData": {
+          "rows": [
+            {
+              "id": 100,
+              "label": "1\" PP",
+              "type": "cb",
+              "data": {
+                "thickness": {
+                  "target": "0.930",
+                  "min": "",
+                  "max": ""
+                },
+                "width": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                },
+                "length": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                }
+              }
+            },
+            {
+              "id": 101,
+              "label": "1\" PP - SB",
+              "type": "sb",
+              "data": {
+                "thickness": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                },
+                "width": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                },
+                "length": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                }
+              }
+            },
+            {
+              "id": 102,
+              "label": "5/4\" PP",
+              "type": "cb",
+              "data": {
+                "thickness": {
+                  "target": "1.460",
+                  "min": "",
+                  "max": ""
+                },
+                "width": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                },
+                "length": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                }
+              }
+            },
+            {
+              "id": 103,
+              "label": "5/4\" PP - SB",
+              "type": "sb",
+              "data": {
+                "thickness": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                },
+                "width": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                },
+                "length": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                }
+              }
+            },
+            {
+              "id": 104,
+              "label": "6/4\" PP",
+              "type": "cb",
+              "data": {
+                "thickness": {
+                  "target": "1.680",
+                  "min": "",
+                  "max": ""
+                },
+                "width": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                },
+                "length": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                }
+              }
+            },
+            {
+              "id": 105,
+              "label": "6/4\" PP - SB",
+              "type": "sb",
+              "data": {
+                "thickness": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                },
+                "width": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                },
+                "length": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                }
+              }
+            }
+          ],
+          "machines": [
+            {
+              "id": 1,
+              "name": "Machine 2",
+              "data": {
+                "100": {
+                  "thickness": {
+                    "target": "0.930",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "101": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "102": {
+                  "thickness": {
+                    "target": "1.460",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "103": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "104": {
+                  "thickness": {
+                    "target": "1.680",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "105": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                }
+              },
+              "wane1": {},
+              "wane2": {}
+            },
+            {
+              "id": 2,
+              "name": "Machine 3",
+              "data": {
+                "100": {
+                  "thickness": {
+                    "target": "0.930",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "101": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "102": {
+                  "thickness": {
+                    "target": "1.460",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "103": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "104": {
+                  "thickness": {
+                    "target": "1.680",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "105": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                }
+              },
+              "wane1": {},
+              "wane2": {}
+            },
+            {
+              "id": 3,
+              "name": "Machine 4",
+              "data": {
+                "100": {
+                  "thickness": {
+                    "target": "0.930",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "101": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "102": {
+                  "thickness": {
+                    "target": "1.460",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "103": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "104": {
+                  "thickness": {
+                    "target": "1.680",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "105": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                }
+              },
+              "wane1": {},
+              "wane2": {}
+            },
+            {
+              "id": 4,
+              "name": "Machine 5",
+              "data": {
+                "100": {
+                  "thickness": {
+                    "target": "0.930",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "101": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "102": {
+                  "thickness": {
+                    "target": "1.460",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "103": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "104": {
+                  "thickness": {
+                    "target": "1.680",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "105": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                }
+              },
+              "wane1": {},
+              "wane2": {}
+            },
+            {
+              "id": 5,
+              "name": "Machine 6",
+              "data": {
+                "100": {
+                  "thickness": {
+                    "target": "0.930",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "101": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "102": {
+                  "thickness": {
+                    "target": "1.460",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "103": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "104": {
+                  "thickness": {
+                    "target": "1.680",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "105": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                }
+              },
+              "wane1": {},
+              "wane2": {}
+            }
+          ],
+          "wane1Rows": [
+            {
+              "id": 500,
+              "label": "Select Structural"
+            },
+            {
+              "id": 501,
+              "label": "#1"
+            },
+            {
+              "id": 502,
+              "label": "#2"
+            },
+            {
+              "id": 503,
+              "label": "#3"
+            },
+            {
+              "id": 504,
+              "label": "C Select"
+            },
+            {
+              "id": 505,
+              "label": "D Select"
+            },
+            {
+              "id": 506,
+              "label": "#2 Common"
+            },
+            {
+              "id": 507,
+              "label": "#3 Common"
+            },
+            {
+              "id": 508,
+              "label": "#4 Common"
+            }
+          ],
+          "wane2Rows": [
+            {
+              "id": 509,
+              "label": "Select Structural"
+            },
+            {
+              "id": 510,
+              "label": "#1"
+            },
+            {
+              "id": 511,
+              "label": "#2"
+            },
+            {
+              "id": 512,
+              "label": "#3"
+            },
+            {
+              "id": 513,
+              "label": "C Select"
+            },
+            {
+              "id": 514,
+              "label": "D Select"
+            },
+            {
+              "id": 515,
+              "label": "#2 Common"
+            },
+            {
+              "id": 516,
+              "label": "#3 Common"
+            },
+            {
+              "id": 517,
+              "label": "#4 Common"
+            }
+          ],
+          "wane1Primary": {},
+          "wane2Primary": {},
+          "wane1Title": "Ponderosa Pine — Primary Wane",
+          "wane2Title": "Ponderosa Pine — Secondary Wane",
+          "priceLengths": [
+            "6",
+            "8",
+            "10",
+            "12",
+            "14",
+            "16",
+            "18",
+            "20"
+          ],
+          "pricePrimary": {},
+          "priceMachines": {},
+          "kerfPrimary": {},
+          "kerfActual": {}
+        }
+      },
+      {
+        "name": "Southern Pine",
+        "alignment": 100,
+        "machineAlignments": [
+          {
+            "name": "Machine 2",
+            "alignment": 100,
+            "sectionAlignments": [
+              {
+                "key": "thickness",
+                "label": "Thickness",
+                "alignment": 100
+              },
+              {
+                "key": "width",
+                "label": "Width",
+                "alignment": 100
+              },
+              {
+                "key": "length",
+                "label": "Length",
+                "alignment": 100
+              }
+            ]
+          },
+          {
+            "name": "Machine 3",
+            "alignment": 100,
+            "sectionAlignments": [
+              {
+                "key": "thickness",
+                "label": "Thickness",
+                "alignment": 100
+              },
+              {
+                "key": "width",
+                "label": "Width",
+                "alignment": 100
+              },
+              {
+                "key": "length",
+                "label": "Length",
+                "alignment": 100
+              }
+            ]
+          },
+          {
+            "name": "Machine 4",
+            "alignment": 100,
+            "sectionAlignments": [
+              {
+                "key": "thickness",
+                "label": "Thickness",
+                "alignment": 100
+              },
+              {
+                "key": "width",
+                "label": "Width",
+                "alignment": 100
+              },
+              {
+                "key": "length",
+                "label": "Length",
+                "alignment": 100
+              }
+            ]
+          },
+          {
+            "name": "Machine 5",
+            "alignment": 100,
+            "sectionAlignments": [
+              {
+                "key": "thickness",
+                "label": "Thickness",
+                "alignment": 100
+              },
+              {
+                "key": "width",
+                "label": "Width",
+                "alignment": 100
+              },
+              {
+                "key": "length",
+                "label": "Length",
+                "alignment": 100
+              }
+            ]
+          },
+          {
+            "name": "Machine 6",
+            "alignment": 100,
+            "sectionAlignments": [
+              {
+                "key": "thickness",
+                "label": "Thickness",
+                "alignment": 100
+              },
+              {
+                "key": "width",
+                "label": "Width",
+                "alignment": 100
+              },
+              {
+                "key": "length",
+                "label": "Length",
+                "alignment": 100
+              }
+            ]
+          }
+        ],
+        "sectionAlignments": [
+          {
+            "key": "thickness",
+            "label": "Thickness",
+            "alignment": 100
+          },
+          {
+            "key": "width",
+            "label": "Width",
+            "alignment": 100
+          },
+          {
+            "key": "length",
+            "label": "Length",
+            "alignment": 100
+          }
+        ],
+        "rawData": {
+          "rows": [
+            {
+              "id": 106,
+              "label": "1\" SP",
+              "type": "cb",
+              "data": {
+                "thickness": {
+                  "target": "0.930",
+                  "min": "",
+                  "max": ""
+                },
+                "width": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                },
+                "length": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                }
+              }
+            },
+            {
+              "id": 107,
+              "label": "1\" SP - SB",
+              "type": "sb",
+              "data": {
+                "thickness": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                },
+                "width": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                },
+                "length": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                }
+              }
+            },
+            {
+              "id": 108,
+              "label": "5/4\" SP",
+              "type": "cb",
+              "data": {
+                "thickness": {
+                  "target": "1.460",
+                  "min": "",
+                  "max": ""
+                },
+                "width": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                },
+                "length": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                }
+              }
+            },
+            {
+              "id": 109,
+              "label": "5/4\" SP - SB",
+              "type": "sb",
+              "data": {
+                "thickness": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                },
+                "width": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                },
+                "length": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                }
+              }
+            },
+            {
+              "id": 110,
+              "label": "6/4\" SP",
+              "type": "cb",
+              "data": {
+                "thickness": {
+                  "target": "1.680",
+                  "min": "",
+                  "max": ""
+                },
+                "width": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                },
+                "length": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                }
+              }
+            },
+            {
+              "id": 111,
+              "label": "6/4\" SP - SB",
+              "type": "sb",
+              "data": {
+                "thickness": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                },
+                "width": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                },
+                "length": {
+                  "target": "",
+                  "min": "",
+                  "max": ""
+                }
+              }
+            }
+          ],
+          "machines": [
+            {
+              "id": 1,
+              "name": "Machine 2",
+              "data": {
+                "106": {
+                  "thickness": {
+                    "target": "0.930",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "107": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "108": {
+                  "thickness": {
+                    "target": "1.460",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "109": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "110": {
+                  "thickness": {
+                    "target": "1.680",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "111": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                }
+              },
+              "wane1": {},
+              "wane2": {}
+            },
+            {
+              "id": 2,
+              "name": "Machine 3",
+              "data": {
+                "106": {
+                  "thickness": {
+                    "target": "0.930",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "107": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "108": {
+                  "thickness": {
+                    "target": "1.460",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "109": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "110": {
+                  "thickness": {
+                    "target": "1.680",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "111": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                }
+              },
+              "wane1": {},
+              "wane2": {}
+            },
+            {
+              "id": 3,
+              "name": "Machine 4",
+              "data": {
+                "106": {
+                  "thickness": {
+                    "target": "0.930",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "107": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "108": {
+                  "thickness": {
+                    "target": "1.460",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "109": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "110": {
+                  "thickness": {
+                    "target": "1.680",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "111": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                }
+              },
+              "wane1": {},
+              "wane2": {}
+            },
+            {
+              "id": 4,
+              "name": "Machine 5",
+              "data": {
+                "106": {
+                  "thickness": {
+                    "target": "0.930",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "107": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "108": {
+                  "thickness": {
+                    "target": "1.460",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "109": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "110": {
+                  "thickness": {
+                    "target": "1.680",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "111": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                }
+              },
+              "wane1": {},
+              "wane2": {}
+            },
+            {
+              "id": 5,
+              "name": "Machine 6",
+              "data": {
+                "106": {
+                  "thickness": {
+                    "target": "0.930",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "107": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "108": {
+                  "thickness": {
+                    "target": "1.460",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "109": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "110": {
+                  "thickness": {
+                    "target": "1.680",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                },
+                "111": {
+                  "thickness": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "width": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  },
+                  "length": {
+                    "target": "",
+                    "min": "",
+                    "max": ""
+                  }
+                }
+              },
+              "wane1": {},
+              "wane2": {}
+            }
+          ],
+          "wane1Rows": [
+            {
+              "id": 518,
+              "label": "Dense Select Structural"
+            },
+            {
+              "id": 519,
+              "label": "Select Structural"
+            },
+            {
+              "id": 520,
+              "label": "#1"
+            },
+            {
+              "id": 521,
+              "label": "#1 Dense"
+            },
+            {
+              "id": 522,
+              "label": "#2"
+            },
+            {
+              "id": 523,
+              "label": "#2 Dense"
+            },
+            {
+              "id": 524,
+              "label": "#3"
+            }
+          ],
+          "wane2Rows": [
+            {
+              "id": 525,
+              "label": "Dense Select Structural"
+            },
+            {
+              "id": 526,
+              "label": "Select Structural"
+            },
+            {
+              "id": 527,
+              "label": "#1"
+            },
+            {
+              "id": 528,
+              "label": "#1 Dense"
+            },
+            {
+              "id": 529,
+              "label": "#2"
+            },
+            {
+              "id": 530,
+              "label": "#2 Dense"
+            },
+            {
+              "id": 531,
+              "label": "#3"
+            }
+          ],
+          "wane1Primary": {},
+          "wane2Primary": {},
+          "wane1Title": "",
+          "wane2Title": "",
+          "priceLengths": [
+            "6",
+            "8",
+            "10",
+            "12",
+            "14",
+            "16",
+            "18",
+            "20"
+          ],
+          "pricePrimary": {},
+          "priceMachines": {},
+          "kerfPrimary": {},
+          "kerfActual": {}
+        }
+      },
+      {
+        "name": "SYP",
+        "alignment": 60,
+        "machineAlignments": [
+          {
+            "name": "Merch",
+            "alignment": 100,
+            "sectionAlignments": [
+              {
+                "key": "thickness",
+                "label": "Thickness",
+                "alignment": 100
+              },
+              {
+                "key": "width",
+                "label": "Width",
+                "alignment": 100
+              },
+              {
+                "key": "length",
+                "label": "Length",
+                "alignment": 100
+              }
+            ]
+          },
+          {
+            "name": "OLI",
+            "alignment": 100,
+            "sectionAlignments": [
+              {
+                "key": "thickness",
+                "label": "Thickness",
+                "alignment": 100
+              },
+              {
+                "key": "width",
+                "label": "Width",
+                "alignment": 100
+              },
+              {
+                "key": "length",
+                "label": "Length",
+                "alignment": 100
+              }
+            ]
+          },
+          {
+            "name": "Gang",
+            "alignment": 33,
+            "sectionAlignments": [
+              {
+                "key": "thickness",
+                "label": "Thickness",
+                "alignment": 0
+              },
+              {
+                "key": "width",
+                "label": "Width",
+                "alignment": 0
+              },
+              {
+                "key": "length",
+                "label": "Length",
+                "alignment": 100
+              }
+            ]
+          },
+          {
+            "name": "Edger",
+            "alignment": 33,
+            "sectionAlignments": [
+              {
+                "key": "thickness",
+                "label": "Thickness",
+                "alignment": 0
+              },
+              {
+                "key": "width",
+                "label": "Width",
+                "alignment": 0
+              },
+              {
+                "key": "length",
+                "label": "Length",
+                "alignment": 100
+              }
+            ]
+          },
+          {
+            "name": "Trimmer",
+            "alignment": 33,
+            "sectionAlignments": [
+              {
+                "key": "thickness",
+                "label": "Thickness",
+                "alignment": 0
+              },
+              {
+                "key": "width",
+                "label": "Width",
+                "alignment": 0
+              },
+              {
+                "key": "length",
+                "label": "Length",
+                "alignment": 100
+              }
+            ]
+          }
+        ],
+        "sectionAlignments": [
+          {
+            "key": "thickness",
+            "label": "Thickness",
+            "alignment": 40
+          },
+          {
+            "key": "width",
+            "label": "Width",
+            "alignment": 40
+          },
+          {
+            "key": "length",
+            "label": "Length",
+            "alignment": 100
+          }
+        ],
+        "rawData": {
+          "rows": [
+            {
+              "id": 1,
+              "name": "2x4",
+              "data": {
+                "thickness": {
+                  "target": "1.500",
+                  "min": "1.490",
+                  "max": "1.510"
+                },
+                "width": {
+                  "target": "3.500",
+                  "min": "3.450",
+                  "max": "3.550"
+                },
+                "length": {
+                  "target": "16",
+                  "min": "15.875",
+                  "max": "16.125"
+                }
+              }
+            },
+            {
+              "id": 2,
+              "name": "2x6",
+              "data": {
+                "thickness": {
+                  "target": "1.500",
+                  "min": "1.490",
+                  "max": "1.510"
+                },
+                "width": {
+                  "target": "5.500",
+                  "min": "5.450",
+                  "max": "5.550"
+                },
+                "length": {
+                  "target": "16",
+                  "min": "15.875",
+                  "max": "16.125"
+                }
+              }
+            },
+            {
+              "id": 3,
+              "name": "2x8",
+              "data": {
+                "thickness": {
+                  "target": "1.500",
+                  "min": "1.490",
+                  "max": "1.510"
+                },
+                "width": {
+                  "target": "7.250",
+                  "min": "7.200",
+                  "max": "7.300"
+                },
+                "length": {
+                  "target": "16",
+                  "min": "15.875",
+                  "max": "16.125"
+                }
+              }
+            },
+            {
+              "id": 4,
+              "name": "2x10",
+              "data": {
+                "thickness": {
+                  "target": "1.500",
+                  "min": "1.490",
+                  "max": "1.510"
+                },
+                "width": {
+                  "target": "9.250",
+                  "min": "9.200",
+                  "max": "9.300"
+                },
+                "length": {
+                  "target": "16",
+                  "min": "15.875",
+                  "max": "16.125"
+                }
+              }
+            },
+            {
+              "id": 5,
+              "name": "2x12",
+              "data": {
+                "thickness": {
+                  "target": "1.500",
+                  "min": "1.490",
+                  "max": "1.510"
+                },
+                "width": {
+                  "target": "11.250",
+                  "min": "11.200",
+                  "max": "11.300"
+                },
+                "length": {
+                  "target": "16",
+                  "min": "15.875",
+                  "max": "16.125"
+                }
+              }
+            }
+          ],
+          "machines": [
+            {
+              "id": 1,
+              "name": "Merch",
+              "data": {
+                "1": {
+                  "thickness": {
+                    "target": "1.500",
+                    "min": "1.490",
+                    "max": "1.510"
+                  },
+                  "width": {
+                    "target": "3.500",
+                    "min": "3.450",
+                    "max": "3.550"
+                  },
+                  "length": {
+                    "target": "16",
+                    "min": "15.875",
+                    "max": "16.125"
+                  }
+                },
+                "2": {
+                  "thickness": {
+                    "target": "1.500",
+                    "min": "1.490",
+                    "max": "1.510"
+                  },
+                  "width": {
+                    "target": "5.500",
+                    "min": "5.450",
+                    "max": "5.550"
+                  },
+                  "length": {
+                    "target": "16",
+                    "min": "15.875",
+                    "max": "16.125"
+                  }
+                },
+                "3": {
+                  "thickness": {
+                    "target": "1.500",
+                    "min": "1.490",
+                    "max": "1.510"
+                  },
+                  "width": {
+                    "target": "7.250",
+                    "min": "7.200",
+                    "max": "7.300"
+                  },
+                  "length": {
+                    "target": "16",
+                    "min": "15.875",
+                    "max": "16.125"
+                  }
+                },
+                "4": {
+                  "thickness": {
+                    "target": "1.500",
+                    "min": "1.490",
+                    "max": "1.510"
+                  },
+                  "width": {
+                    "target": "9.250",
+                    "min": "9.200",
+                    "max": "9.300"
+                  },
+                  "length": {
+                    "target": "16",
+                    "min": "15.875",
+                    "max": "16.125"
+                  }
+                },
+                "5": {
+                  "thickness": {
+                    "target": "1.500",
+                    "min": "1.490",
+                    "max": "1.510"
+                  },
+                  "width": {
+                    "target": "11.250",
+                    "min": "11.200",
+                    "max": "11.300"
+                  },
+                  "length": {
+                    "target": "16",
+                    "min": "15.875",
+                    "max": "16.125"
+                  }
+                }
+              },
+              "wane": {
+                "wane1": {
+                  "max": "5/16"
+                },
+                "wane2": {
+                  "max": "3/8"
+                }
+              }
+            },
+            {
+              "id": 2,
+              "name": "OLI",
+              "data": {
+                "1": {
+                  "thickness": {
+                    "target": "1.500",
+                    "min": "1.490",
+                    "max": "1.510"
+                  },
+                  "width": {
+                    "target": "3.500",
+                    "min": "3.450",
+                    "max": "3.550"
+                  },
+                  "length": {
+                    "target": "16",
+                    "min": "15.875",
+                    "max": "16.125"
+                  }
+                },
+                "2": {
+                  "thickness": {
+                    "target": "1.500",
+                    "min": "1.490",
+                    "max": "1.510"
+                  },
+                  "width": {
+                    "target": "5.500",
+                    "min": "5.450",
+                    "max": "5.550"
+                  },
+                  "length": {
+                    "target": "16",
+                    "min": "15.875",
+                    "max": "16.125"
+                  }
+                },
+                "3": {
+                  "thickness": {
+                    "target": "1.500",
+                    "min": "1.490",
+                    "max": "1.510"
+                  },
+                  "width": {
+                    "target": "7.250",
+                    "min": "7.200",
+                    "max": "7.300"
+                  },
+                  "length": {
+                    "target": "16",
+                    "min": "15.875",
+                    "max": "16.125"
+                  }
+                },
+                "4": {
+                  "thickness": {
+                    "target": "1.500",
+                    "min": "1.490",
+                    "max": "1.510"
+                  },
+                  "width": {
+                    "target": "9.250",
+                    "min": "9.200",
+                    "max": "9.300"
+                  },
+                  "length": {
+                    "target": "16",
+                    "min": "15.875",
+                    "max": "16.125"
+                  }
+                },
+                "5": {
+                  "thickness": {
+                    "target": "1.500",
+                    "min": "1.490",
+                    "max": "1.510"
+                  },
+                  "width": {
+                    "target": "11.250",
+                    "min": "11.200",
+                    "max": "11.300"
+                  },
+                  "length": {
+                    "target": "16",
+                    "min": "15.875",
+                    "max": "16.125"
+                  }
+                }
+              },
+              "wane": {
+                "wane1": {
+                  "max": "5/16"
+                },
+                "wane2": {
+                  "max": "3/8"
+                }
+              }
+            },
+            {
+              "id": 3,
+              "name": "Gang",
+              "data": {
+                "1": {
+                  "thickness": {
+                    "target": "1.502",
+                    "min": "1.492",
+                    "max": "1.512"
+                  },
+                  "width": {
+                    "target": "3.510",
+                    "min": "3.460",
+                    "max": "3.560"
+                  },
+                  "length": {
+                    "target": "16",
+                    "min": "15.875",
+                    "max": "16.125"
+                  }
+                },
+                "2": {
+                  "thickness": {
+                    "target": "1.502",
+                    "min": "1.492",
+                    "max": "1.512"
+                  },
+                  "width": {
+                    "target": "5.510",
+                    "min": "5.460",
+                    "max": "5.560"
+                  },
+                  "length": {
+                    "target": "16",
+                    "min": "15.875",
+                    "max": "16.125"
+                  }
+                },
+                "3": {
+                  "thickness": {
+                    "target": "1.502",
+                    "min": "1.492",
+                    "max": "1.512"
+                  },
+                  "width": {
+                    "target": "7.260",
+                    "min": "7.210",
+                    "max": "7.310"
+                  },
+                  "length": {
+                    "target": "16",
+                    "min": "15.875",
+                    "max": "16.125"
+                  }
+                },
+                "4": {
+                  "thickness": {
+                    "target": "1.502",
+                    "min": "1.492",
+                    "max": "1.512"
+                  },
+                  "width": {
+                    "target": "9.260",
+                    "min": "9.210",
+                    "max": "9.310"
+                  },
+                  "length": {
+                    "target": "16",
+                    "min": "15.875",
+                    "max": "16.125"
+                  }
+                },
+                "5": {
+                  "thickness": {
+                    "target": "1.502",
+                    "min": "1.492",
+                    "max": "1.512"
+                  },
+                  "width": {
+                    "target": "11.260",
+                    "min": "11.210",
+                    "max": "11.310"
+                  },
+                  "length": {
+                    "target": "16",
+                    "min": "15.875",
+                    "max": "16.125"
+                  }
+                }
+              },
+              "wane": {
+                "wane1": {
+                  "max": "5/16"
+                },
+                "wane2": {
+                  "max": "3/8"
+                }
+              }
+            },
+            {
+              "id": 4,
+              "name": "Edger",
+              "data": {
+                "1": {
+                  "thickness": {
+                    "target": "1.501",
+                    "min": "1.491",
+                    "max": "1.511"
+                  },
+                  "width": {
+                    "target": "3.505",
+                    "min": "3.455",
+                    "max": "3.555"
+                  },
+                  "length": {
+                    "target": "16",
+                    "min": "15.875",
+                    "max": "16.125"
+                  }
+                },
+                "2": {
+                  "thickness": {
+                    "target": "1.501",
+                    "min": "1.491",
+                    "max": "1.511"
+                  },
+                  "width": {
+                    "target": "5.505",
+                    "min": "5.455",
+                    "max": "5.555"
+                  },
+                  "length": {
+                    "target": "16",
+                    "min": "15.875",
+                    "max": "16.125"
+                  }
+                },
+                "3": {
+                  "thickness": {
+                    "target": "1.501",
+                    "min": "1.491",
+                    "max": "1.511"
+                  },
+                  "width": {
+                    "target": "7.255",
+                    "min": "7.205",
+                    "max": "7.305"
+                  },
+                  "length": {
+                    "target": "16",
+                    "min": "15.875",
+                    "max": "16.125"
+                  }
+                },
+                "4": {
+                  "thickness": {
+                    "target": "1.501",
+                    "min": "1.491",
+                    "max": "1.511"
+                  },
+                  "width": {
+                    "target": "9.255",
+                    "min": "9.205",
+                    "max": "9.305"
+                  },
+                  "length": {
+                    "target": "16",
+                    "min": "15.875",
+                    "max": "16.125"
+                  }
+                },
+                "5": {
+                  "thickness": {
+                    "target": "1.501",
+                    "min": "1.491",
+                    "max": "1.511"
+                  },
+                  "width": {
+                    "target": "11.255",
+                    "min": "11.205",
+                    "max": "11.305"
+                  },
+                  "length": {
+                    "target": "16",
+                    "min": "15.875",
+                    "max": "16.125"
+                  }
+                }
+              },
+              "wane": {
+                "wane1": {
+                  "max": "5/16"
+                },
+                "wane2": {
+                  "max": "3/8"
+                }
+              }
+            },
+            {
+              "id": 5,
+              "name": "Trimmer",
+              "data": {
+                "1": {
+                  "thickness": {
+                    "target": "1.499",
+                    "min": "1.489",
+                    "max": "1.509"
+                  },
+                  "width": {
+                    "target": "3.515",
+                    "min": "3.465",
+                    "max": "3.565"
+                  },
+                  "length": {
+                    "target": "16",
+                    "min": "15.875",
+                    "max": "16.125"
+                  }
+                },
+                "2": {
+                  "thickness": {
+                    "target": "1.499",
+                    "min": "1.489",
+                    "max": "1.509"
+                  },
+                  "width": {
+                    "target": "5.515",
+                    "min": "5.465",
+                    "max": "5.565"
+                  },
+                  "length": {
+                    "target": "16",
+                    "min": "15.875",
+                    "max": "16.125"
+                  }
+                },
+                "3": {
+                  "thickness": {
+                    "target": "1.499",
+                    "min": "1.489",
+                    "max": "1.509"
+                  },
+                  "width": {
+                    "target": "7.265",
+                    "min": "7.215",
+                    "max": "7.315"
+                  },
+                  "length": {
+                    "target": "16",
+                    "min": "15.875",
+                    "max": "16.125"
+                  }
+                },
+                "4": {
+                  "thickness": {
+                    "target": "1.499",
+                    "min": "1.489",
+                    "max": "1.509"
+                  },
+                  "width": {
+                    "target": "9.265",
+                    "min": "9.215",
+                    "max": "9.315"
+                  },
+                  "length": {
+                    "target": "16",
+                    "min": "15.875",
+                    "max": "16.125"
+                  }
+                },
+                "5": {
+                  "thickness": {
+                    "target": "1.499",
+                    "min": "1.489",
+                    "max": "1.509"
+                  },
+                  "width": {
+                    "target": "11.265",
+                    "min": "11.215",
+                    "max": "11.315"
+                  },
+                  "length": {
+                    "target": "16",
+                    "min": "15.875",
+                    "max": "16.125"
+                  }
+                }
+              },
+              "wane": {
+                "wane1": {
+                  "max": "5/16"
+                },
+                "wane2": {
+                  "max": "3/8"
+                }
+              }
+            }
+          ],
+          "wane1Rows": [
+            {
+              "id": 532,
+              "label": "Select Structural"
+            },
+            {
+              "id": 533,
+              "label": "#1"
+            },
+            {
+              "id": 534,
+              "label": "#2"
+            },
+            {
+              "id": 535,
+              "label": "#3"
+            },
+            {
+              "id": 536,
+              "label": "C Select"
+            },
+            {
+              "id": 537,
+              "label": "D Select"
+            },
+            {
+              "id": 538,
+              "label": "#2 Common"
+            },
+            {
+              "id": 539,
+              "label": "#3 Common"
+            },
+            {
+              "id": 540,
+              "label": "#4 Common"
+            }
+          ],
+          "wane2Rows": [
+            {
+              "id": 541,
+              "label": "Select Structural"
+            },
+            {
+              "id": 542,
+              "label": "#1"
+            },
+            {
+              "id": 543,
+              "label": "#2"
+            },
+            {
+              "id": 544,
+              "label": "#3"
+            },
+            {
+              "id": 545,
+              "label": "C Select"
+            },
+            {
+              "id": 546,
+              "label": "D Select"
+            },
+            {
+              "id": 547,
+              "label": "#2 Common"
+            },
+            {
+              "id": 548,
+              "label": "#3 Common"
+            },
+            {
+              "id": 549,
+              "label": "#4 Common"
+            }
+          ],
+          "wane1Primary": {},
+          "wane2Primary": {},
+          "wane1Title": "New species — Primary Wane",
+          "wane2Title": "New species — Secondary Wane",
+          "priceLengths": [
+            "6",
+            "8",
+            "10",
+            "12",
+            "14",
+            "16",
+            "18",
+            "20"
+          ],
+          "pricePrimary": {},
+          "priceMachines": {},
+          "kerfPrimary": {},
+          "kerfActual": {}
+        }
+      }
+    ]
   }
 ]
