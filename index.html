@@ -254,8 +254,10 @@ td.row-label.cb-row{color:#185FA5;}
 .star-btn:hover{color:#FFD700;}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
+<input type="file" id="xlsxImportInput" accept=".xlsx" style="display:none" onchange="handleXLSXImport(event)"/>
 
 <!-- Setup Screen -->
 <div id="setupScreen">
@@ -302,6 +304,7 @@ td.row-label.cb-row{color:#185FA5;}
         <button class="btn accent" onclick="addMachine()">+ Machine</button>
         <button class="btn accent" onclick="addProductRow()">+ Product row</button>
         <button class="btn" onclick="exportCSV()">Export CSV</button>
+        <button class="btn" onclick="importXLSX()">Import XLSX</button>
       </div>
     </div>
     <div class="species-bar">
@@ -1514,8 +1517,9 @@ async function exportSnapshotXLSX(id){
   if(!snap)return;
 
   // Only export species that have actual data in at least one machine column
+  // Species has meaningful data if any machine has width AND thickness filled (defaults only have thickness)
   const hasData=sp=>sp.rawData&&sp.rawData.machines&&sp.rawData.machines.some(m=>
-    Object.values(m.data||{}).some(d=>d.thickness&&d.thickness.target!=='')
+    Object.values(m.data||{}).some(d=>d.width&&d.width.target!==''&&d.thickness&&d.thickness.target!=='')
   );
   const speciesWithData=snap.species.filter(hasData);
   // Fall back to all if none pass the filter (shouldn't happen)
@@ -1679,6 +1683,242 @@ async function exportSnapshotXLSX(id){
   a.href=url;a.download=`snapshot-${snap.label.replace(/\s+/g,'-')}.xlsx`;
   document.body.appendChild(a);a.click();document.body.removeChild(a);
   URL.revokeObjectURL(url);
+}
+
+/* ════════════════════════════════════════
+   IMPORT — XLSX
+════════════════════════════════════════ */
+function importXLSX(){
+  document.getElementById('xlsxImportInput').click();
+}
+
+function handleXLSXImport(event){
+  const file=event.target.files[0];
+  if(!file)return;
+  event.target.value='';
+  toast('Reading file…');
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      if(typeof XLSX==='undefined'){toast('Import library not loaded — check connection');return;}
+      const wb=XLSX.read(new Uint8Array(e.target.result),{type:'array'});
+      let imported=0;
+      wb.SheetNames.forEach(sheetName=>{
+        const ws=wb.Sheets[sheetName];
+        const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
+        const sp=parseAuditSheet(sheetName,rows);
+        if(sp){species.push(sp);activeSp=sp.id;imported++;}
+      });
+      render();
+      toast(imported>0?`Imported ${imported} species from XLSX`:'Nothing importable found — check file format');
+    }catch(err){
+      toast('Import failed — '+err.message);
+      console.error(err);
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function parseAuditSheet(sheetName,rows){
+  if(!rows||rows.length<2)return null;
+
+  // Find first row index whose first cell contains keyword (case-insensitive)
+  const findSection=kw=>{
+    for(let i=0;i<rows.length;i++){
+      if((rows[i][0]||'').toString().toUpperCase().includes(kw.toUpperCase()))return i;
+    }
+    return -1;
+  };
+
+  // First non-empty row after startRow (within 4 rows)
+  const findHdr=start=>{
+    for(let i=start+1;i<Math.min(start+5,rows.length);i++){
+      if(rows[i]&&rows[i].some(c=>c!==''))return i;
+    }
+    return start+1;
+  };
+
+  // Rows from startRow until blank or section-header (ALL-CAPS first cell with "—")
+  const getDataRows=start=>{
+    const out=[];
+    for(let i=start;i<rows.length;i++){
+      const r=rows[i];
+      if(!r||!r.some(c=>c!==''))break;
+      const fc=(r[0]||'').toString();
+      if(fc===fc.toUpperCase()&&fc.length>8&&fc.includes('—'))break;
+      out.push(r);
+    }
+    return out;
+  };
+
+  // Parse column headers of the form "{MachineName} {Thickness|Width|Length} {Target|Min|Max}"
+  const parseSettingsCols=hdr=>{
+    const dimMap={thickness:'thickness',width:'width',length:'length'};
+    const sfMap={target:'target',min:'min',max:'max'};
+    const map={};
+    hdr.forEach((cell,idx)=>{
+      if(!cell)return;
+      const parts=cell.toString().trim().split(/\s+/);
+      if(parts.length<3)return;
+      const sf=sfMap[parts[parts.length-1].toLowerCase()];
+      const dim=dimMap[parts[parts.length-2].toLowerCase()];
+      if(!sf||!dim)return;
+      const mname=parts.slice(0,parts.length-2).join(' ');
+      if(!mname)return;
+      if(!map[mname])map[mname]={};
+      if(!map[mname][dim])map[mname][dim]={};
+      map[mname][dim][sf]=idx;
+    });
+    return map;
+  };
+
+  // ── MACHINE SETTINGS ──────────────────
+  const settStart=findSection('MACHINE SETTINGS');
+  if(settStart<0)return null;
+
+  const hdrIdx=findHdr(settStart);
+  const colMap=parseSettingsCols(rows[hdrIdx]||[]);
+  const machineNames=Object.keys(colMap).filter(n=>n.toLowerCase()!=='primary');
+  const primCols=colMap['Primary']||colMap['PRIMARY']||null;
+
+  const spRows=[], machineArr=[];
+  machineNames.forEach(name=>machineArr.push({id:machineId++,name,data:{},wane1:{},wane2:{}}));
+
+  getDataRows(hdrIdx+1).forEach(r=>{
+    const label=(r[0]||'').toString().trim();
+    const typeRaw=(r[1]||'').toString().trim().toLowerCase();
+    if(!label)return;
+    const rid=rowId++;
+    const primData={};
+    SETTING_GROUPS.forEach(g=>{
+      const pc=(primCols&&primCols[g.key])||{};
+      primData[g.key]={
+        target:(r[pc.target]||'').toString().trim(),
+        min:(r[pc.min]||'').toString().trim(),
+        max:(r[pc.max]||'').toString().trim(),
+      };
+    });
+    spRows.push({id:rid,label,type:['sb','cb','dim'].includes(typeRaw)?typeRaw:'dim',data:primData});
+    machineArr.forEach(m=>{
+      m.data[rid]={};
+      SETTING_GROUPS.forEach(g=>{
+        const mc=(colMap[m.name]&&colMap[m.name][g.key])||{};
+        m.data[rid][g.key]={
+          target:(r[mc.target]||'').toString().trim(),
+          min:(r[mc.min]||'').toString().trim(),
+          max:(r[mc.max]||'').toString().trim(),
+        };
+      });
+    });
+  });
+
+  if(spRows.length===0)return null;
+
+  // ── WANE ──────────────────────────────
+  // Find all rows containing "WANE" — first = face/wane1, second = edge/wane2
+  const waneSectionIdxs=[];
+  rows.forEach((r,i)=>{if((r[0]||'').toString().toUpperCase().includes('WANE'))waneSectionIdxs.push(i);});
+
+  const wane1Rows=[],wane2Rows=[],wane1Primary={},wane2Primary={};
+
+  waneSectionIdxs.slice(0,2).forEach((wsStart,wi)=>{
+    const wk=wi===0?'wane1':'wane2';
+    const whIdx=findHdr(wsStart);
+    const wh=rows[whIdx]||[];
+
+    // Column pattern: "{name} % Length|Edge|Face"
+    const wColMap={};
+    wh.forEach((cell,idx)=>{
+      if(!cell)return;
+      const m=cell.toString().trim().match(/^(.+?)\s+%\s+(Length|Edge|Face)$/i);
+      if(!m)return;
+      const mname=m[1].trim();
+      const field=m[2].toLowerCase();
+      const sfKey=field==='length'?'target':field==='edge'?'min':'max';
+      if(!wColMap[mname])wColMap[mname]={};
+      wColMap[mname][sfKey]=idx;
+    });
+
+    const wRowsArr=wk==='wane1'?wane1Rows:wane2Rows;
+    const wPrim=wk==='wane1'?wane1Primary:wane2Primary;
+    const primWCols=wColMap['Primary']||wColMap['PRIMARY']||{};
+
+    getDataRows(whIdx+1).forEach(r=>{
+      const label=(r[0]||'').toString().trim();
+      if(!label)return;
+      const wrid=waneRowId++;
+      wRowsArr.push({id:wrid,label});
+      wPrim[wrid]={
+        target:(r[primWCols.target]||'').toString().trim(),
+        min:(r[primWCols.min]||'').toString().trim(),
+        max:(r[primWCols.max]||'').toString().trim(),
+      };
+      machineArr.forEach(m=>{
+        const mc=wColMap[m.name]||{};
+        m[wk][wrid]={
+          target:(r[mc.target]||'').toString().trim(),
+          min:(r[mc.min]||'').toString().trim(),
+          max:(r[mc.max]||'').toString().trim(),
+        };
+      });
+    });
+  });
+
+  // ── PRICING ───────────────────────────
+  const pricePrimary={},priceMachines={};
+  machineArr.forEach(m=>priceMachines[m.id]={});
+  let priceLengths=[...DEFAULT_PRICE_LENGTHS];
+
+  const priceStart=findSection('PRICING');
+  if(priceStart>=0){
+    const phIdx=findHdr(priceStart);
+    const ph=rows[phIdx]||[];
+    const primLenCols=[],machLenCols={};
+    ph.forEach((cell,idx)=>{
+      const m=cell.toString().trim().match(/^(.+?)\s+(\d+)'$/);
+      if(!m)return;
+      const mname=m[1].trim(),len=m[2];
+      if(mname.toLowerCase()==='primary'){primLenCols.push({len,idx});}
+      else{if(!machLenCols[mname])machLenCols[mname]=[];machLenCols[mname].push({len,idx});}
+    });
+    if(primLenCols.length>0)priceLengths=primLenCols.map(c=>c.len);
+
+    getDataRows(phIdx+1).forEach(r=>{
+      const label=(r[0]||'').toString().trim();
+      const matchRow=spRows.find(x=>x.label===label);
+      if(!matchRow)return;
+      pricePrimary[matchRow.id]=primLenCols.map(c=>(r[c.idx]||'').toString().trim());
+      machineArr.forEach(m=>{
+        const mc=machLenCols[m.name]||[];
+        priceMachines[m.id][matchRow.id]=mc.map(c=>(r[c.idx]||'').toString().trim());
+      });
+    });
+  }
+
+  // ── KERF ──────────────────────────────
+  const kerfPrimary={},kerfActual={};
+  const kerfStart=findSection('KERF');
+  if(kerfStart>=0){
+    const khIdx=findHdr(kerfStart);
+    getDataRows(khIdx+1).forEach(r=>{
+      const mname=(r[0]||'').toString().trim();
+      const m=machineArr.find(x=>x.name===mname);
+      if(!m)return;
+      kerfPrimary[m.id]=(r[1]||'').toString().trim();
+      kerfActual[m.id]=(r[2]||'').toString().trim();
+    });
+  }
+
+  // Build species name: strip section suffix (e.g. "SYP — MACHINE SETTINGS" → "SYP")
+  const name=sheetName.replace(/\s*[—–-].*$/,'').trim()||'Imported Species';
+
+  return{
+    id:spId++,name,note:'Imported from XLSX',gradingBody:'WWPA',primaryMachineId:null,
+    wane1Rows,wane2Rows,wane1Primary,wane2Primary,
+    wane1Title:`${name} — Face Wane`,wane2Title:`${name} — Edge Wane`,
+    priceLengths,pricePrimary,priceMachines,priceStars:{},
+    kerfPrimary,kerfActual,rows:spRows,machines:machineArr,
+  };
 }
 
 function downloadCSV(rows,name){
