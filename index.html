@@ -257,7 +257,7 @@ td.row-label.cb-row{color:#185FA5;}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
-<input type="file" id="xlsxImportInput" accept=".xlsx" style="display:none" onchange="handleXLSXImport(event)"/>
+<input type="file" id="xlsxImportInput" accept=".xlsx,.csv" style="display:none" onchange="handleXLSXImport(event)"/>
 
 <!-- Setup Screen -->
 <div id="setupScreen">
@@ -1710,7 +1710,7 @@ function handleXLSXImport(event){
         if(sp){species.push(sp);activeSp=sp.id;imported++;}
       });
       render();
-      toast(imported>0?`Imported ${imported} species from XLSX`:'Nothing importable found — check file format');
+      toast(imported>0?`Imported ${imported} species`:'Nothing importable found — check file format');
     }catch(err){
       toast('Import failed — '+err.message);
       console.error(err);
@@ -1777,7 +1777,12 @@ function parseAuditSheet(sheetName,rows){
   if(settStart<0)return null;
 
   const hdrIdx=findHdr(settStart);
-  const colMap=parseSettingsCols(rows[hdrIdx]||[]);
+  const hdrRow=rows[hdrIdx]||[];
+  // Old CSV format has "Species" as col 0; XLSX format starts with "Product"
+  const hasSpeciesCol=(hdrRow[0]||'').toString().trim().toLowerCase()==='species';
+  const labelIdx=hasSpeciesCol?1:0;
+  const typeIdx=hasSpeciesCol?2:1;
+  const colMap=parseSettingsCols(hdrRow);
   const machineNames=Object.keys(colMap).filter(n=>n.toLowerCase()!=='primary');
   const primCols=colMap['Primary']||colMap['PRIMARY']||null;
 
@@ -1785,8 +1790,8 @@ function parseAuditSheet(sheetName,rows){
   machineNames.forEach(name=>machineArr.push({id:machineId++,name,data:{},wane1:{},wane2:{}}));
 
   getDataRows(hdrIdx+1).forEach(r=>{
-    const label=(r[0]||'').toString().trim();
-    const typeRaw=(r[1]||'').toString().trim().toLowerCase();
+    const label=(r[labelIdx]||'').toString().trim();
+    const typeRaw=(r[typeIdx]||'').toString().trim().toLowerCase();
     if(!label)return;
     const rid=rowId++;
     const primData={};
